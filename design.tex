@@ -1,5 +1,6 @@
 \section{design and implementation}
 \subsection{constraint}
+
 \subsection{algorithms}
 \begin{itemize}
   \item
@@ -8,11 +9,61 @@
     }
   \item
     {
-      greedy
+      We will decide the max brightness only depends on the last frame
+      and current frame.
+
+      right-bottom is not significant
+
+      set the pixels around the frame. if it doesn't match, select the
+      most candidate or the last one. 
     }
   \item
     {
-      skipping
+      skipping some frames.
     }
 \end{itemize}
+
+It's not so effective if we process per frame at the receiving end and
+
+unlike the streaming or local video play case, the real-time
+communication need compose several frames together(e.g, in
+peer-to-peer case, typically the opponent's head occupy the most
+display and the picture of the users lay at the bottom of display).
+we must efficiently compose these pictures together in using GPU
+without dropping the fps. Finally, we don't need risk the high power
+consumption difference between GPU on-and-off. We only afford the
+extra computation power consumption.
+
 \subsection{implementation}
+
+We divide the system into two parts, the scanning module and the
+adjusting module, respectively resides in sender and receiver. For the
+sender, before encoding, we insert the scanning module at this
+point. it is responsible of scanning generate the raw frames collected
+from the capturer, usually is the camera on the mobile. Actually two
+options for the scanning model locations are available. One is the
+point we mentioned. The second one the at the receiver side. But as we
+know, the frames have to be composed at the time of rendering. So if
+we scan the raw frames received, we have to scan $n$ times per frame,
+which is simply impossible. The alternative option is to scan the
+composed frame at rendering time. 1) the time is not enough if the
+scanning operation is more time consuming than the $\frac{1}{fps}$. 2)
+No space for DP. So the first option is not the only choice, but it's
+the better one. 
+
+The second component is the adjust component. certainly it sits in the
+receivers devices. The part can buffer the frames and fetch out
+information they carried. For some strategy, i.e. DP, Greedy... to
+adjust the space of pixels to emluminance and also notice the system
+to scale its backlight. What I need mention is that if we have to
+perform the DP, we have to equip a queue of size greater than
+$1$. two reason we prefer the Greedy version.
+1) The network bandwidth throttle the size of queue. make it hardly
+achieve global optimization in backlight scale. 
+2) In the case of real-time communication, the variation of scenarios
+is little. We hardly meet the case of luminance raise or drop
+abruptly.
+
+The third one is rendering extension. When the frames are composed and
+before convert to RGBA format in shader. we increase the Y component. 
+
