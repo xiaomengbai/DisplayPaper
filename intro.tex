@@ -1,5 +1,7 @@
 \section{Introduction}
 
+% stress the importance real-time communication on mobile devices
+% This part is redundant, make it concise.
 As an advanced functionality, video call becomes an essential
 component in many *communication applications/wechat, skype... check
 in twin cloud paper*. The needs for unifying the interface is
@@ -10,5 +12,65 @@ browsers integrates the function into there production, i.e. Chrome,
 Opera, Firefox. Developers can easily include video call in their page
 via few lines of javascript code.
 
-As the mobile market emerging, 
+% conventional 
+On the other hand, people doesn't satisfy themselves with traditional
+phone call, which make them only listen to their relatives. On
+smartphone, installing communication applications becomes available
+and people can also see the other end over one call. *not only on the
+traditional PC*. Moreover, video call is much cheaper, sometimes even
+free. In the future day, we can easily make video call over webRTC,
+the unifying interface in browsers. Since both on the mobile and PC we
+can access it via browsers. Even more, Google has been making effort
+on packaging their implementation in Chrome as available for Android
+App developers. So we can make such call via the simple thing.
+
+
+The power-saving scheme for VoIP is few, since the most applications
+are properties of company. Researchers is hard to figure out which
+part is enable to save the energy. Also the old applications are
+designed for PC client. The achievement is in the network layer,
+adapting the transmission protocols to specific scenarios *I guess,
+check it*. On the other hand, many effective energy effective schemes
+were proposed for streaming on mobile platform, such as *give some
+example, ref to our paper*. This motivate us to put these schemes in
+the real-time multimedia case.
+
+Thanks to Google, the Chromes is an open source project, in the nature
+of things the WebRTC is part of it as libjingle*introduce to
+libjingle*. More fortunately, the libjingle is able to be integrated
+as 3rd library with Android applications. So the Android application
+can take advantage of this aside web browsers.
+
+Display is the most great part of mobile power consuming. As
+LCD*introduce the LCD?*, one 
+efficient way to save power is adjust the backlight with compensating
+the pixels. there are works done on the local video case and online
+streaming case. Usually the GPU is used to dynamically scan frames and
+retrieve the highest pixels. we have some opportunities:
+\begin{itemize}
+  \item
+    {
+      % Challenge: Cooperation
+      In the real-time case, or the p2p case, video is generated via
+      clients. We don't need to passively accept the frame and parse
+      frames until them are decoded. On the other hand, we can scan
+      the frames before encoding when the stream is
+      generated. How can we effectively do this? one challenge is how
+      we pass the information to the other side. we
+      don't need to open another data channel on this. put the max
+      pixel at the corner.
+      *We can also split the scanning process*
+      we offload the DP part to the receiver.
+    }
+  \item
+    {
+        % Challenge: take advantage of the scenarios
+        Also the real-time communication has its characteristics. The
+        frames staying relative still. We can adjust the max liminance
+        in greedy manner. More aggressively, we can adjust the frames
+        in case of skipping some frames. 
+    }
+\end{itemize}
+
+the paper is organized as follows: *filled this*
 
