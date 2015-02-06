@@ -74,7 +74,7 @@ in distortion without violating the constraints.
   
 \end{algorithm}
 
-In this the algorithm~\ref{arg:greedy}, we input the luminance
+In this the algorithm~\ref{alg:greedy}, we input the luminance
 $Y_{t}^{max}$ of $t$th frame and get the target backlight level
 $b_{t}$ for future adjustment. Then we can scale the backlight when
 the corresponding frame is shown on the display. However, the distortion
@@ -138,11 +138,12 @@ max luminance information is hidden inside corresponding frame. To
 avoid packet loss in network transfer, we set the max luminance value
 at all four corners. When these values are fetch out, the most
 equivalent value is elected as the max luminance of this frame.
-\begin{figure}
+
+\begin{figure}[!htb]
   \centering
-\label{fig:design}
-\includegraphics*[scale=0.5]{figures/design}
-\caption{System Design}
+  \label{fig:design}
+  \includegraphics[scale=.5]{./figures/design.eps}
+  \caption{System Design}
 \end{figure}
 
 We intend to use CPU other than GPU to scan the raw frame. 1)

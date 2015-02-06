@@ -2,89 +2,153 @@
 
 % stress the importance real-time communication on mobile devices
 % This part is redundant, make it concise.
-As an advanced functionality, video call becomes an essential
-component in many *communication applications/wechat, skype... check
-in twin cloud paper*. The needs for unifying the interface is
-increasingly desirable. The success of DATH *add name* hints people
-the importance of HTTP in video/audio streaming scenarios. WebRTC as a
-new API existing in HTML5 drops in developer's sight. Mainstream
-browsers integrates the function into there production, i.e. Chrome,
-Opera, Firefox. Developers can easily include video call in their page
-via few lines of javascript code.
+% Don't discuss the details of WebRTC. Only mention the general idea
+% of Real-time communication.
 
-% conventional 
-On the other hand, people doesn't satisfy themselves with traditional
-phone call, which make them only listen to their relatives. On
-smartphone, installing communication applications becomes available
-and people can also see the other end over one call. *not only on the
-traditional PC*. Moreover, video call is much cheaper, sometimes even
-free. In the future day, we can easily make video call over webRTC,
-the unifying interface in browsers. Since both on the mobile and PC we
-can access it via browsers. Even more, Google has been making effort
-on packaging their implementation in Chrome as available for Android
-App developers. So we can make such call via the simple thing.
+We have witnessed the great success of real-time communication in the
+past decade. Skype, QQ and Apple's Facetime are honored all around the
+world, as the result of that people can contact anyone only if both of
+them are online. This service provides a much cheaper alternative
+other than the telephone. More attractively, with the bandwidth growth
+of Internet, real-time communication is always equipped video channel
+that two ends can talk face-to-face. Now the prosperity of mobile
+devices, including smart phones, tablets and emerging wearable
+devices, offers another available platform for the real-time
+communication. On the other hand, Dynamic Adaptive Streaming over
+HTTP(DASH) makes a salient example that how multimedia streaming is
+delivered nowadays. WebRTC(Web Real-Time Communication), technique
+that integrating real-time communication over HTTP, is standardized by
+W3C and the IETF. Thus a cross-platform solution will be handy and the
+growth of real-time communication on new platform is
+expected. However, new challenges are found on mobile devices when
+delivering streaming. One of them is power saving. 
+%% As an advanced functionality, video call becomes an essential
+%% component in many *communication applications/wechat, skype... check
+%% in twin cloud paper*. The needs for unifying the interface is
+%% increasingly desirable. The success of DATH *add name* hints people
+%% the importance of HTTP in video/audio streaming scenarios. WebRTC as a
+%% new API existing in HTML5 drops in developer's sight. Mainstream
+%% browsers integrates the function into there production, i.e. Chrome,
+%% Opera, Firefox. Developers can easily include video call in their page
+%% via few lines of javascript code.
 
 
-The power-saving scheme for VoIP is few, since the most applications
-are properties of company. Researchers is hard to figure out which
-part is enable to save the energy. Also the old applications are
-designed for PC client. The achievement is in the network layer,
-adapting the transmission protocols to specific scenarios *I guess,
-check it*. On the other hand, many effective energy effective schemes
-were proposed for streaming on mobile platform, such as *give some
-example, ref to our paper*. This motivate us to put these schemes in
-the real-time multimedia case.
+On the mobile platform, about 38\% to 68\% of total power is consumed
+by the display subsystem during the video playback, while this portion
+is expected to ever grow on the new generation of devices, which are
+equipped more powerful GPUs and more large-sized display panels. We
+believe that the real-time communication services will be more
+attractive if the power consumption of display subsystem is cut
+down. Since the Liquid-Crystal Displays(LCD) is dominant in current
+transparent display market, in this paper, we are about to propose a
+scheme can help reduce the power consumption of LCD. 
 
-Thanks to Google, the Chromes is an open source project, in the nature
-of things the WebRTC is part of it as libjingle*introduce to
-libjingle*. More fortunately, the libjingle is able to be integrated
-as 3rd library with Android applications. So the Android application
-can take advantage of this aside web browsers.
 
-Display is the most great part of mobile power consuming. As
-LCD*introduce the LCD?*, one 
-efficient way to save power is adjust the backlight with compensating
-the pixels. there are works done on the local video case and online
-streaming case. Usually the GPU is used to dynamically scan frames and
-retrieve the highest pixels. we have some opportunities:
+In this paper, we explored the possibility if we can apply an
+effective LCD power-saving technique, named luminance compensation, on
+the real-time communication services. This technique has been adopted
+on the Internet streaming services, while in the real-time case,
+several challenges can be found:
 \begin{itemize}
   \item
     {
-      % Challenge: Cooperation
-      In the real-time case, or the p2p case, video is generated via
-      clients. We don't need to passively accept the frame and parse
-      frames until them are decoded. On the other hand, we can scan
-      the frames before encoding when the stream is
-      generated. How can we effectively do this? one challenge is how
-      we pass the information to the other side. we
-      don't need to open another data channel on this. put the max
-      pixel at the corner.
-      *We can also split the scanning process*
-      we offload the DP part to the receiver.
+      Unlike the Internet streaming services, the streaming content of
+      real-time content is not predefined. This make extracting pixel
+      information, which is computation intensive, more difficult.
     }
   \item
     {
-      % Challenge: take advantage of the scenarios
-      Also the real-time communication has its characteristics. The
-      frames staying relative still. We can adjust the max liminance
-      in greedy manner. More aggressively, we can adjust the frames
-      in case of skipping some frames. 
+      In real-time communication, a common output frame is composed of
+      $N$ frames while there are $N$ participants. This makes
+      extracting operation more burdensome.
     }
   \item
     {
-      % Challenge: graphical composition
-      The receiver is asked to compose frames received from several
-      senders. 
-    }
-  \item
-    {
-      % The DP problem
-      The DP is not optimal if the power-backlight is not linear
-      relationship. But the Greedy is even more not optimal.
-
-      In real-communication users is more likely to be tolerant. 
+      While the pixels extracting operations and backlight adjustment
+      procedure both consumes extra CPU/GPU resource, This may offset
+      the savings. It is alluring to make these operations more
+      power-effective.
     }
 \end{itemize}
+
+%% designed a system composed three components in the names of {\bf
+%%   Scanning Module}, {\bf Adjustment Module} and {\bf Rendering
+%%   Module}. These components are integrated into real-time
+%% communication.
+
+
+% conventional
+%% On the other hand, people doesn't satisfy themselves with traditional
+%% phone call, which make them only listen to their relatives. On
+%% smartphone, installing communication applications becomes available
+%% and people can also see the other end over one call. *not only on the
+%% traditional PC*. Moreover, video call is much cheaper, sometimes even
+%% free. In the future day, we can easily make video call over webRTC,
+%% the unifying interface in browsers. Since both on the mobile and PC we
+%% can access it via browsers. Even more, Google has been making effort
+%% on packaging their implementation in Chrome as available for Android
+%% App developers. So we can make such call via the simple thing.
+
+%% The power-saving scheme for VoIP is few, since the most applications
+%% are properties of company. Researchers is hard to figure out which
+%% part is enable to save the energy. Also the old applications are
+%% designed for PC client. The achievement is in the network layer,
+%% adapting the transmission protocols to specific scenarios *I guess,
+%% check it*. On the other hand, many effective energy effective schemes
+%% were proposed for streaming on mobile platform, such as *give some
+%% example, ref to our paper*. This motivate us to put these schemes in
+%% the real-time multimedia case.
+
+%% Thanks to Google, the Chromes is an open source project, in the nature
+%% of things the WebRTC is part of it as libjingle*introduce to
+%% libjingle*. More fortunately, the libjingle is able to be integrated
+%% as 3rd library with Android applications. So the Android application
+%% can take advantage of this aside web browsers.
+
+%% Display is the most great part of mobile power consuming. As
+%% LCD*introduce the LCD?*, one 
+%% efficient way to save power is adjust the backlight with compensating
+%% the pixels. there are works done on the local video case and online
+%% streaming case. Usually the GPU is used to dynamically scan frames and
+%% retrieve the highest pixels. we have some opportunities:
+%% \begin{itemize}
+%%   \item
+%%     {
+%%       % Challenge: Cooperation
+%%       In the real-time case, or the p2p case, video is generated via
+%%       clients. We don't need to passively accept the frame and parse
+%%       frames until them are decoded. On the other hand, we can scan
+%%       the frames before encoding when the stream is
+%%       generated. How can we effectively do this? one challenge is how
+%%       we pass the information to the other side. we
+%%       don't need to open another data channel on this. put the max
+%%       pixel at the corner.
+%%       *We can also split the scanning process*
+%%       we offload the DP part to the receiver.
+%%     }
+%%   \item
+%%     {
+%%       % Challenge: take advantage of the scenarios
+%%       Also the real-time communication has its characteristics. The
+%%       frames staying relative still. We can adjust the max liminance
+%%       in greedy manner. More aggressively, we can adjust the frames
+%%       in case of skipping some frames. 
+%%     }
+%%   \item
+%%     {
+%%       % Challenge: graphical composition
+%%       The receiver is asked to compose frames received from several
+%%       senders. 
+%%     }
+%%   \item
+%%     {
+%%       % The DP problem
+%%       The DP is not optimal if the power-backlight is not linear
+%%       relationship. But the Greedy is even more not optimal.
+
+%%       In real-communication users is more likely to be tolerant. 
+%%     }
+%% \end{itemize}
 
 the paper is organized as follows: *filled this*
 
