@@ -5,23 +5,26 @@
 % Don't discuss the details of WebRTC. Only mention the general idea
 % of Real-time communication.
 
-We have witnessed the great success of real-time communication in the
-past decade. Skype, QQ and Apple's Facetime are honored all around the
-world, as the result of that people can contact anyone only if both of
-them are online. This service provides a much cheaper alternative
-other than the telephone. More attractively, with the bandwidth growth
-of Internet, real-time communication is always equipped video channel
-that two ends can talk face-to-face. Now the prosperity of mobile
-devices, including smart phones, tablets and emerging wearable
-devices, offers another available platform for the real-time
-communication. On the other hand, Dynamic Adaptive Streaming over
-HTTP(DASH) makes a salient example that how multimedia streaming is
-delivered nowadays. WebRTC(Web Real-Time Communication), technique
-that integrating real-time communication over HTTP, is standardized by
-W3C and the IETF. Thus a cross-platform solution will be handy and the
-growth of real-time communication on new platform is
-expected. However, new challenges are found on mobile devices when
-delivering streaming. One of them is power saving. 
+The great success of the real-time communication has been witnessed in
+the last decade. The real-time communication, as a considerably
+cheaper alternative to the telephones, makes QQ, Skype, Apple's
+Facetime and etc. so popular all round the world. More attractively,
+with the bandwidth growth of the Internet, the real-time communication
+is always equipped with the video channel so that two ends can talk
+face-to-face. Now the prosperity of mobile devices, including
+smartphones, tablets and emerging wearable devices, offers another
+available platform for the real-time communication. The real-time
+communication is more desired on these portable devices, which can
+benefit from the wireless networks everywhere. However, new challenges
+to deliver video stream on the mobile devices have raised and one of
+them is to maximize the power savings.
+%% On the other hand, Dynamic Adaptive Streaming over
+%% HTTP(DASH) makes a salient example that how multimedia streaming is
+%% delivered nowadays. WebRTC(Web Real-Time Communication), technique
+%% that integrating real-time communication over HTTP, is standardized by
+%% W3C and the IETF. Thus a cross-platform solution will be handy and the
+%% growth of real-time communication on new platform is
+%% expected.
 %% As an advanced functionality, video call becomes an essential
 %% component in many *communication applications/wechat, skype... check
 %% in twin cloud paper*. The needs for unifying the interface is
@@ -32,42 +35,48 @@ delivering streaming. One of them is power saving.
 %% Opera, Firefox. Developers can easily include video call in their page
 %% via few lines of javascript code.
 
+The real-time communication services will be more attractive to the
+mobile users if its power consumption is cut down. During the video
+playback, about 38\% to 68\% of total power is consumed by the display
+subsystem, and this portion is expected to ever grow on the new
+generation of devices, which are equipped with more powerful GPUs and
+more large-sized display panels. In this paper, we are about to
+propose a scheme to help reduce the power consumption of
+Liquid-Crystal Displays(LCD), which is dominant in current transparent
+display market.
 
-On the mobile platform, about 38\% to 68\% of total power is consumed
-by the display subsystem during the video playback, while this portion
-is expected to ever grow on the new generation of devices, which are
-equipped more powerful GPUs and more large-sized display panels. We
-believe that the real-time communication services will be more
-attractive if the power consumption of display subsystem is cut
-down. Since the Liquid-Crystal Displays(LCD) is dominant in current
-transparent display market, in this paper, we are about to propose a
-scheme can help reduce the power consumption of LCD. 
 
-
-In this paper, we explored the possibility if we can apply an
-effective LCD power-saving technique, named luminance compensation, on
-the real-time communication services. This technique has been adopted
-on the Internet streaming services, while in the real-time case,
-several challenges can be found:
+In this paper, we explored the possibility if an effective LCD
+power-saving technique, named luminance compensation, can be applied
+on the real-time communication services. There are three steps in this
+technique. 1) Extract the luminance histrogram of the frames. 2)
+Decide the backlight levels and do scaling when the frames are
+rendered. 3) According to the backlight levels, enhance the luminance
+component of the pixels. This technique has been successfully adopted
+on some other streaming services, however, there are still 
+several challenges in the real-time case:
 \begin{itemize}
   \item
     {
-      Unlike the Internet streaming services, the streaming content of
-      real-time content is not predefined. This make extracting pixel
-      information, which is computation intensive, more difficult.
+      Unlike the other streaming services of predefined content, in
+      real-time communication, there is no way to build a utility to
+      extract and analyze the videos in the offline manner. The extraction
+      process, which is computation intensive, has to be installed
+      along with the services. 
     }
   \item
     {
-      In real-time communication, a common output frame is composed of
-      $N$ frames while there are $N$ participants. This makes
-      extracting operation more burdensome.
+      In a N-party communication, $N$ frames are rendered on one screen
+      at the same time. $N$ times the input data makes the extraction
+      operation even worse.
     }
   \item
     {
-      While the pixels extracting operations and backlight adjustment
-      procedure both consumes extra CPU/GPU resource, This may offset
-      the savings. It is alluring to make these operations more
-      power-effective.
+      To decide the backlights levels, a dynamic programming algorithm
+      has been proposed. However, this handy soloution requires large
+      buffer size to collect enough luminance information and then to
+      reach the global optimal result. However, this is not practical
+      in the real-time case.
     }
 \end{itemize}
 
