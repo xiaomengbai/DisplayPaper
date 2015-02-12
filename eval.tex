@@ -20,11 +20,55 @@ To align the frames. (Can try index the frames in several pixels)
 \end{itemize}
 
 
-Expr 3:
-Give a 2~3 minutes conversations under different brightness. Different
-strategies.
-\begin{itemize}
-  \item{Power}
-\end{itemize}
+\subsection{Power Consumption}
+We conducted a series of simple experiments to evaluate the power
+consumption of our system. Two devices, one NEXUS 4 smartphone and one
+Samsung Galaxy 10 inch tablet, were used in these experiments. We
+installed the original version WebRTC app and an upgraded version
+equipped with our dynamic programming scheme. When these two devices
+connected to each other, we put them under different environments to
+evaluate if our scheme could outperform the original version. Two
+extreme environments were selected purposely. One was an extreme
+bright environment that our scheme didn't work any more. Under the
+other environment, which is an extreme dark case, the backlight could
+always be scaled to the lowest threshold($0.4$). We measured the power
+consumption of the tablets in all of these cases and the results are
+shown in ~\ref{tab:power_consumption}.
+
+
+\begin{table}[h]
+  \centering
+  \caption{power consumption}
+  \label{tab:power_consumption}
+  %% device | dark | bright |
+  \begin{tabular}{|c|c|c|c|c|} %lcr
+    \hline
+    & \multicolumn{2}{|c|}{SAMSUNG(dark)} & \multicolumn{2}{|c|}{SAMSUNG(bright)} \\ \hline
+    & no-adaption & with adaption & no-adaption & with adaption \\ \hline
+    NEXUS(dark) & $\sim{6250}$ mW & $\sim{3810}$ mW & $\sim{6900}$ mW & $\sim{4150}$ mW  \\ \hline
+    NEXUS(bright) & $\sim{6500}$ mW & $\sim{6400}$ mW & $\sim{7250}$ mW & $\sim{6800}$ mW \\ \hline
+  \end{tabular}
+  
+\end{table}
+
+From the table, we found that the original version WebRTC app consumed
+similar power, which was from $6250$ mA to $7250$ mA, under different
+environments. The slight difference are caused by the mutable fps. The
+WebRTC app actively reduces the fps if it detects that the environment
+gets dark. So the power consumption was found lowest when both the
+devices were put in the dark environment. The most observable power
+savings were found in the case that the NEXUS was put in the dark
+environment. The dimmed frames sent by the NEXUS help the tablet take
+advantage of the luminance compensation technique.  Notice that
+although our scheme outperformed the original version in the both
+bright case. This power reduction comes from the lower fps. The
+dynamic programming algorithm, holding too many frames before
+delivering them to the rendering module, will definitely degrade the
+video quality.
+%% The
+%% dynamic programming algorithm has to hold enough frames to adjust
+%% backlight, so that it can not deliver the frames to the rendering
+%% module in time.
+
 
 ~\cite{JSC08} %% for compiling
