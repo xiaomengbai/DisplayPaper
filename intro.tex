@@ -1,6 +1,99 @@
 \section{Introduction}
 
 
+With the ever-improving network and mobility support, recently,
+real-time communication software, being standalone or combined with
+social media, have also found their way on mobile devices.  Being able
+to support video calls while entirely free or at least cheaper than
+the traditional voice communications, these software, such as Skype,
+QQ, Apple's Facetime, and Google WebRTC, are quickly gaining
+popularity among common mobile users.
+
+However, the limited battery power supply remains as the Archille's
+heels of mobile devices while real-time video communications are very
+power-hungry. Compared to the video streaming, real-time video calls
+are more demanding. In the real-time video communication, such as the
+video conferencing, the video contents are generated on the fly from
+multiple sources. Even for the one-to-one video call, double frames
+are generated other than the common video streaming. Thus, efficiently
+reducing the power consumption for video calls on mobile devices is
+imperative.
+
+
+Previously, since the display subsystem on a mobile device often
+consumes about 38\% to 68\% of the total energy during video
+streaming~\cite{AG10}, a few schemes have been designed to reduce the
+power consumption of the display. For a Liquid-Crystal Displays (LCD)
+display, the dominant power consumption is by the backlight
+intensity. Thus to reduce the power consumption, it is desirable to
+dim the backlight as much as possible while enhancing the luminance of
+the pixels to comprensate the quality degradation due to backlight
+dimming.  In this way, the modified images on the screen can maintain
+image fidelity to the human's eyes. Such a technique is called
+backlight scaling.
+
+In detail, the backlight scaling technique is composed of three
+stages, i.e., 1) the histogram generation stage, 2) the backlight
+levels determination stage, 3) the pixel compensation stage. The first
+stage and the last stage are both computation intensive. Therefore,
+some previous design either ignore the luminance
+compensation~\cite{HLH11}, leading to significant quality degradation
+and user experience unsatisfaction, or demand additional computing
+resources for compensation~\cite{LHH14}, making the scheme
+non-practical for mobile devices.  In the second stage, some previous
+research applies the dynamic programming to find the globally optimal
+backlight levels without violating the hardware and user experience
+constraints. Thus, the video frames must be available in advance.
+However, for real-time video calls, this is impossible because the
+video content is generated on the fly.  Furthermore, being higly
+sensitive to delay, real-time video calls cannot tolerate the delay
+that may be caused by the dynamic programming. In addition, by often
+supporting multiple participants and thus receiving data from multiple
+sources simultaneously, the backlight scaling technique cannot be
+directly used for video calls.
+
+In this paper, we set to explore the display power saving for video
+calls on mobile devices. Since there are often less background changes
+and slower frame rate in practical video calls, we propose a greedy
+display power saving scheme.  Similar to the dynamic programming
+algorithm for video streaming, there are same constraints that our
+greedy algorithm must conform to. The first is that the backlight
+variations must be limited otherwise the flickering effect is expected
+in the user experience. The second is that the backlight should not be
+scaled down too much to cause the distortion.  The third is that the
+backlight cannot be adjust too frequently as hardware needs some time
+to respond.
+
+
+To avoid processing the same frame repeatedly, in our design {\bf
+  better to also have a acronym for our greedy algorithm}, we migrate
+the histogram generation stage to the sender side for video calls. We
+put the luminance information inside each frame without building an
+additional channel. Also duplicated information is hidden for the
+possible loss during the video encoding/decoding and the network
+transmission.
+
+Furthermore, since GPU is commonly equipped in the mobile devices, we
+take advantage of this facility to offload some tasks from the
+CPU. For the purpose of rendering the received frames in timely
+manner, we use the OpenGL ES 2.0 shaders to perform the pixel
+enhancement.  Moreover, the power savings will not be offset by
+enabling GPU since GPU is widely used in the video conferencing for
+composing frames together and then rendering them.
+
+To evaluate the performance of our design, we implement a prototype
+and .....{\bf complete this paragraph}
+
+This paper is organized as follows: the background is introduced and
+some related work is reviewed in Section \ref{sec:background}. We propose
+our design in Section \ref{sec:design}. The details of implementation
+are illustrated in Section \ref{sec:implementation}. Then we discuss
+the evaluation in Section \ref{sec:evaluation} and conclude our work
+in Section \ref{sec:conclusion}.
+
+
+%% old representation
+\if 0
 The great success of the real-time communication has been witnessed in
 the last decade. The popular software, like Skype, QQ and Apple's
 Facetime, make the real-time communication as a cheaper alternative to
@@ -13,18 +106,6 @@ power-hungry modules, like wireless network, camera and etc. So
 maximizing the power savings is desired and attractive in the
 real-time communication.
 
-%% The real-time communication, as a considerably
-%% cheaper alternative to the calls, makes QQ, Skype, Apple's
-%% Facetime and etc. so popular all round the world. More attractively,
-%% with the bandwidth growth of the Internet, the real-time communication
-%% is always equipped with the video channel so that two ends can talk
-%% face-to-face. Now the prosperity of mobile devices, including
-%% smartphones, tablets and emerging wearable devices, offers another
-%% available platform for the real-time communication. The real-time
-%% communication is more desired on these portable devices, which can
-%% benefit from the wireless networks everywhere. However, new challenges
-%% to deliver video stream on the mobile devices have raised and one of
-%% them is to maximize the power savings.
 
 According to the previous research ~\cite{AG10}, about 38\% to 68\% of the
 total energy is consumed by the display subsystem during the video
@@ -92,6 +173,22 @@ our design in Section \ref{sec:design}. The details of implementation
 are illustrated in Section \ref{sec:implementation}. Then we discuss
 the evaluation in Section \ref{sec:evaluation} and conclude our work
 in Section \ref{sec:conclusion}.
+\fi
+
+
+%% The real-time communication, as a considerably
+%% cheaper alternative to the calls, makes QQ, Skype, Apple's
+%% Facetime and etc. so popular all round the world. More attractively,
+%% with the bandwidth growth of the Internet, the real-time communication
+%% is always equipped with the video channel so that two ends can talk
+%% face-to-face. Now the prosperity of mobile devices, including
+%% smartphones, tablets and emerging wearable devices, offers another
+%% available platform for the real-time communication. The real-time
+%% communication is more desired on these portable devices, which can
+%% benefit from the wireless networks everywhere. However, new challenges
+%% to deliver video stream on the mobile devices have raised and one of
+%% them is to maximize the power savings.
+
 
 % stress the importance real-time communication on mobile devices
 % This part is redundant, make it concise.
