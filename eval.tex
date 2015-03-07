@@ -1,14 +1,96 @@
 \section{evaluation}
 \label{sec:evaluation}
 
-Expr 1:
-Comparison between normal case and cases applied our scheme.
-Prove that our implementation doesn't downgrade the user experience.
-\begin{itemize}
-  \item{bitrate}
-  \item{fps}
-  \item{maybe others}
-\end{itemize}
+In worrying about our scheme will make the quality of the video calls
+degrades, we measured the quality metrics in fps, bitrate and latency
+of our greedy scheme compared to the original version. All the results
+is reported by the webRTC app itself. In measurement, we found the
+quality of the video in webRTC is self-adjusted. There are two factors
+affecting the fps and bitrate: the average luminance of the frames and
+the content of the frames. The webRTC app intends to reduce the
+fps/bitrate in darker images. Also the static frames gains higher
+fps/bitrate other than the frames containing moving objects. To
+evaluate how much overhead is introduced by our scheme, we only use
+the static scenario as the test case. We expect if our greedy
+algorithm won't impair the visual quality of the static scenario,
+which features higher fps and bitrate, the quality of scenarios
+containing moving objects will not be damaged as well.
+
+
+Two devices are used in this measurement, one Samsung 10.1-inch tablet
+and one NEXUS 4 smartphone. The data is collected from the tablet. We test the
+real-time communication in the resolution of $640$x$480$, and set the
+upperbound of the frames generation by the camera as $30$. Both the
+dark scenario and the bright scenario are measured. We maintained the
+communication at least $5$ minutes. We test the {\it loopback} and the
+{\it remote} respectively. The {\it loopback} means the tablet
+communicate to itself via network. And the {\it remote} means
+communication between two devices.
+
+\begin{table}[h]
+  \centering
+  \caption{video quality}
+  \label{tab:quality}
+  %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|} %lcr
+    \hline
+    & \multicolumn{6}{|c|}{fps} & \multicolumn{2}{|c|}{bitrate} \\ \hline
+    & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
+    & \multicolumn{2}{|c|}{output} & sent & recv
+    \\ \hline
+    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ & & \\ \hline
+    \multicolumn{9}{|c|}{bright scenario/loopback} \\ \hline
+    original & $24.67$ & $1.01$ & $22.73$ & $3.59$ & $15.37$ & $2.44$ &
+    $81076$ & $81344$ \\ \hline
+    greedy & $24.51$ & $1.06$ & $21.64$ & $2.76$ & $15.19$ & $2.06$ &
+    $44832$ & $45193$ \\ \hline
+    \multicolumn{9}{|c|}{bright scenario/remote} \\ \hline
+    original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ &
+    $269094$ & $41583$ \\ \hline
+    greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$ &
+    $267309$ & $32905$ \\ \hline
+    \multicolumn{9}{|c|}{dark scenario/loopback} \\ \hline
+    original & $7.86$ & $0.35$ & $8.00$ & $0.00$ & $7.87$ & $0.40$ &
+    $168306$ & $168306$ \\ \hline
+    greedy & $7.88$ & $0.39$ & $8.00$ & $0.05$ & $7.87$ & $0.39$ &
+    $165936$ & $165936$ \\ \hline
+    \multicolumn{9}{|c|}{dark scenario/remote} \\ \hline
+    original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ &
+    $462505$ & $924722$ \\ \hline
+    greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ &
+    $246837$ & $779452$ \\ \hline
+    %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
+  \end{tabular}
+  
+\end{table}
+
+From the Table~\ref{tab:quality}, we can find that our greedy scheme
+doesn't affect the fps. 
+
+%% \begin{table}[h]
+%%   \centering
+%%   \caption{power consumption}
+%%   \label{tab:power_consumption}
+%%   %% device | dark | bright |
+%%   \begin{tabular}{|c|c|c|c|c|} %lcr
+%%     \hline
+%%     & \multicolumn{2}{|c|}{SAMSUNG(dark)} & \multicolumn{2}{|c|}{SAMSUNG(bright)} \\ \hline
+%%     & no-adaption & with adaption & no-adaption & with adaption \\ \hline
+%%     NEXUS(dark) & $\sim{6250}$ mW & $\sim{3810}$ mW & $\sim{6900}$ mW & $\sim{4150}$ mW  \\ \hline
+%%     NEXUS(bright) & $\sim{6500}$ mW & $\sim{6400}$ mW & $\sim{7250}$ mW & $\sim{6800}$ mW \\ \hline
+%%   \end{tabular}
+  
+%% \end{table}
+
+
+%% Expr 1:
+%% Comparison between normal case and cases applied our scheme.
+%% Prove that our implementation doesn't downgrade the user experience.
+%% \begin{itemize}
+%%   \item{bitrate}
+%%   \item{fps}
+%%   \item{maybe others}
+%% \end{itemize}
 
 Expr 2:
 Compare the distortion of frames among 1) normal case 2) DP 3)

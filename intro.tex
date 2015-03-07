@@ -7,7 +7,8 @@ social media, have also found their way on mobile devices.  Being able
 to support video calls while entirely free or at least cheaper than
 the traditional voice communications, these software, such as Skype,
 QQ, Apple's Facetime, and Google WebRTC, are quickly gaining
-popularity among common mobile users.
+popularity among common mobile users. {\bf please add reference for
+  each software}
 
 However, the limited battery power supply remains as the Archille's
 heels of mobile devices while real-time video communications are very
@@ -32,7 +33,7 @@ dimming.  In this way, the modified images on the screen can maintain
 image fidelity to the human's eyes. Such a technique is called
 backlight scaling.
 
-In detail, the backlight scaling technique is composed of three
+In detail, the backlight scaling technique often consists of three
 stages, i.e., 1) the histogram generation stage, 2) the backlight
 levels determination stage, 3) the pixel compensation stage. The first
 stage and the last stage are both computation intensive. Therefore,
@@ -55,39 +56,42 @@ directly used for video calls.
 In this paper, we set to explore the display power saving for video
 calls on mobile devices. Since there are often less background changes
 and slower frame rate in practical video calls, we propose a greedy
-display power saving scheme.  Similar to the dynamic programming
-algorithm for video streaming, there are same constraints that our
-greedy algorithm must conform to. The first is that the backlight
-variations must be limited otherwise the flickering effect is expected
-in the user experience. The second is that the backlight should not be
-scaled down too much to cause the distortion.  The third is that the
-backlight cannot be adjust too frequently as hardware needs some time
-to respond.
+display power saving scheme, called {\em LCD-GDP}.  Similar to the dynamic programming
+approach for video streaming, there are same constraints that our
+greedy algorithm must conform to. The {\em first} is that the backlight
+variations between neighboring frames must be limited. Otherwise the flickering effect is expected
+in the user experience~\cite{}. {\bf add reference here} The {\em second} is that the backlight should not be
+scaled down too much to cause image distortion~\cite{}. {\bf add
+  reference}  The {\em third} is that the
+backlight cannot be adjusted too frequently because the hardware needs some time
+to respond~\cite{}. {\bf add reference}
 
 
-To avoid processing the same frame repeatedly, in our design {\bf
-  better to also have a acronym for our greedy algorithm}, we migrate
-the histogram generation stage to the sender side for video calls. We
+To avoid processing the same frame repeatedly, in LCD-GDP, {\em first}, we migrate
+the histogram generation to the sender side for video calls. We
 put the luminance information inside each frame without building an
 additional channel. Also duplicated information is hidden for the
 possible loss during the video encoding/decoding and the network
 transmission.
 
-Furthermore, since GPU is commonly equipped in the mobile devices, we
-take advantage of this facility to offload some tasks from the
-CPU. For the purpose of rendering the received frames in timely
+{\em Second}, since GPU is commonly equipped in the mobile devices, we
+take advantage of GPU to offload some tasks from the
+CPU. For the purpose of rendering the received frames in a timely
 manner, we use the OpenGL ES 2.0 shaders to perform the pixel
 enhancement.  Moreover, the power savings will not be offset by
 enabling GPU since GPU is widely used in the video conferencing for
 composing frames together and then rendering them.
 
-To evaluate the performance of our design, we implement a prototype
-and .....{\bf complete this paragraph}
+To evaluate the performance of our design, we implement LCD-GDP into
+WebRTC and run experiments on a tablet and a smartphone. Experimental
+results show that .....{\bf complete this paragraph}
 
-This paper is organized as follows: the background is introduced and
-some related work is reviewed in Section \ref{sec:background}. We propose
-our design in Section \ref{sec:design}. The details of implementation
-are illustrated in Section \ref{sec:implementation}. Then we discuss
+This paper is organized as follows. We describe some background
+information for both backlight scaling and WebRTC 
+%is introduced and some related work is reviewed 
+in Section \ref{sec:background}. We present
+our design in Section \ref{sec:design} and the implementation details
+in Section \ref{sec:implementation}. We discuss
 the evaluation in Section \ref{sec:evaluation} and conclude our work
 in Section \ref{sec:conclusion}.
 

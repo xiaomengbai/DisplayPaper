@@ -9,16 +9,17 @@ compensation and proper luminance calculation are computation
 intensive and demand per-frame luminance information. Thus, existing
 schemes only target video-on-demand where the luminance information of
 each frame is available in advance. In addition, they demand
-additional computing resource support. Otherwise, the computing
+additional computing resource support. Otherwise, if the computation
+is conducted on the mobile device, the computing
 overhead can easily offset the power saving.  In this work, we set to
 investigate power saving for video calls on mobile devices.  Different
 from video-on-demand, the real-time video calls are highly delay
 sensitive and the frame luminance information is not known in
-advance. Moreover, video conferencing often involves multiple
-streaming sources from multiple participants, making it more
+advance. Moreover, video calls often involve multiple
+streaming sources from multiple ($\ge$2) participants, making it more
 difficult.  Because there are fewer background changes and a often
 slower frame rate in video calls, we design a greedy display power
-saving scheme by utilizing the commonly available GPU on mobile
+saving scheme, called LCD-GDP, by utilizing the commonly available GPU on mobile
 devices without demanding additional support.  Our design is
 implemented on WebRTC, a popular real-time web browser based video
 call standard.  Experiments show that our scheme can save upto 40\%

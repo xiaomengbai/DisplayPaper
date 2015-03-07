@@ -1,0 +1,46 @@
+\begin{abstract}
+
+On a mobile device, the display subsystem ususally consumes 30\%-60\%
+of the total battery power.  As such, a few designs have aimed to
+reduce the display power consumption in mobile video streaming.  The
+basic idea is to dim the backlight level while properly compensating
+the pixel luminance to maintain image fidelity.  The luminance
+compensation and proper luminance calculation are computation
+intensive and demand per-frame luminance information. Thus, existing
+schemes only target video-on-demand where the luminance information of
+each frame is available in advance. In addition, they demand
+additional computing resource support. Otherwise, the computing
+overhead can easily offset the power saving.  In this work, we set to
+investigate power saving for video calls on mobile devices.  Different
+from video-on-demand, the real-time video calls are highly delay
+sensitive and the frame luminance information is not known in
+advance. Moreover, video conferencing often involves multiple
+streaming sources from multiple participants, making it more
+difficult.  Because there are fewer background changes and a often
+slower frame rate in video calls, we design a greedy display power
+saving scheme by utilizing the commonly available GPU on mobile
+devices without demanding additional support.  Our design is
+implemented on WebRTC, a popular real-time web browser based video
+call standard.  Experiments show that our scheme can save upto 40\%
+power consumption in video calls.
+
+%% Power saving is a significant issue at the mobile platform. Various
+%% techniques were proposed to extend the playback time of the
+%% videos. Backlight scaling is one of them and target the display
+%% subsystem. However, the multimedia content need to be delivered in a
+%% timely manner in the real-time communication. This raises challenges
+%% towards the existing backlight scaling technique. The backlight
+%% scaling technique is composed of computation intensive tasks,
+%% including the luminance histogram generation and the pixels
+%% luminance compensation on every frame. Multiple streaming sources in
+%% the video conference make this problem more difficult. Moreover,
+%% global luminance information is necessary for finding the optimal
+%% backlight levels across the streaming. This is clearly impossible in
+%% the real-time case. In this paper, we propose a greedy algorithm
+%% determining the backlight level of current frame only from the last
+%% one. We also take advantage of the GPU to relive the burden of the
+%% CPU on compensating the luminance of pixels. We integrate our
+%% prototype in the AppRTC, an Android app based on WebRTC, and find
+%% that our scheme can save up to 39.8\% energy during one
+%% communication session.
+\end{abstract}
