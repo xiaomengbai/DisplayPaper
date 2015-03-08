@@ -1,71 +1,212 @@
 \section{evaluation}
 \label{sec:evaluation}
+We conducted all the experiments on two devices: one NEXUS 4
+smartphone and one Samsung Galaxy 10.1-inch tablet. As the
+additional stages are added into the video conferencing, we first
+examine if our implementation will impact the video streaming
+quality. And then the amounts of power consumption reduced is
+evaluated by using the monsoon power monitor. 
 
+\subsection{Power Consumption}
+
+\begin{figure}[t]
+  \begin{center}
+  \includegraphics[scale=.5]{./figures/power.eps}
+  \caption{Power consumption of real-time communication}
+  \label{fig:power}
+  \end{center}
+\end{figure}
+
+
+We also measured the power consumption when there is real-time
+communication channel built between these two devices. To evaluate the
+effect of our system, we test the power consumption under scenes with
+different levels of brightness. A two-minute conversation is conducted
+in each experiment. The scenes can be tagged with {\it bright}, {\it
+  dusky} and {\it dark}, which make backlight level set to $0.99$,
+$0.75$ and $0.42$ on average in our system. Also we measured the power
+consumption of the original version of WebRTC app. The results are
+plot on figure~\ref{fig:power}. The x-axis is the time in seconds, and
+the y-axis is the power consumption in walts. In this figure, power
+consumption of the original WebRTC app under different scenes is
+almost in same level so only the result under bright environment is
+plot, which is $6.935$ walts on average. This value is considered as
+the baseline and the power consumption of our system is found slightly
+higher than it, which is $7.160$ walts. The reason is that extra
+modules are integrated into the system but the backlight has never
+been dimmed across the conversation. In the dusky and dark case,
+$6.235$ ($12.92\%$) walts and $4.783$ ($33.20\%$) walts is consumed on
+average by dimming the backlight intensity. The beginning descendent
+gradient shows the process of the greedy algorithm dimming the
+backlight intensity.
+
+
+\subsection{Video quality}
 In worrying about our scheme will make the quality of the video calls
-degrades, we measured the quality metrics in fps, bitrate and latency
-of our greedy scheme compared to the original version. All the results
-is reported by the webRTC app itself. In measurement, we found the
-quality of the video in webRTC is self-adjusted. There are two factors
-affecting the fps and bitrate: the average luminance of the frames and
-the content of the frames. The webRTC app intends to reduce the
-fps/bitrate in darker images. Also the static frames gains higher
-fps/bitrate other than the frames containing moving objects. To
-evaluate how much overhead is introduced by our scheme, we only use
-the static scenario as the test case. We expect if our greedy
-algorithm won't impair the visual quality of the static scenario,
-which features higher fps and bitrate, the quality of scenarios
-containing moving objects will not be damaged as well.
+degrades, we measured the quality metrics in frames per second (fps)
+and latency. The comparison is made by our greedy scheme and the
+original version. All the results are reported by the webRTC app
+itself. 
 
 
-Two devices are used in this measurement, one Samsung 10.1-inch tablet
-and one NEXUS 4 smartphone. The data is collected from the tablet. We test the
-real-time communication in the resolution of $640$x$480$, and set the
-upperbound of the frames generation by the camera as $30$. Both the
-dark scenario and the bright scenario are measured. We maintained the
-communication at least $5$ minutes. We test the {\it loopback} and the
-{\it remote} respectively. The {\it loopback} means the tablet
-communicate to itself via network. And the {\it remote} means
-communication between two devices.
+In the measurement, the fps metric varied in great range if moving
+objects is involved into the frames. The frame rate reached the
+highest threshold if the frame content is a static scene. Only the
+static scene is used in our experiment.  We expect if our scheme will
+not impact the video streaming with higher fps, it won't impact the
+one with lower fps as well. We measured the fps under scenes with
+different brightness and the resolution of the video streaming is set as
+$640$x$480$. In the webRTC app, the frame rate of generation is
+limited to $30$ fps and at most $15$ frames are rendered per
+second. At least $5$ minutes streaming is maintained in each
+experiment. The data is collected from the Samsung tablet. 
+
+
 
 \begin{table}[h]
   \centering
-  \caption{video quality}
-  \label{tab:quality}
+  \caption{video frames per second}
+  \label{tab:fps}
   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
-  \begin{tabular}{|c|c|c|c|c|c|c|c|c|} %lcr
+  \begin{tabular}{|c|c|c|c|c|c|c|} %lcr
     \hline
-    & \multicolumn{6}{|c|}{fps} & \multicolumn{2}{|c|}{bitrate} \\ \hline
+    & \multicolumn{6}{|c|}{fps} \\ \hline
     & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
-    & \multicolumn{2}{|c|}{output} & sent & recv
+    & \multicolumn{2}{|c|}{output}
     \\ \hline
-    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ & & \\ \hline
-    \multicolumn{9}{|c|}{bright scenario/loopback} \\ \hline
-    original & $24.67$ & $1.01$ & $22.73$ & $3.59$ & $15.37$ & $2.44$ &
-    $81076$ & $81344$ \\ \hline
-    greedy & $24.51$ & $1.06$ & $21.64$ & $2.76$ & $15.19$ & $2.06$ &
-    $44832$ & $45193$ \\ \hline
-    \multicolumn{9}{|c|}{bright scenario/remote} \\ \hline
-    original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ &
-    $269094$ & $41583$ \\ \hline
-    greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$ &
-    $267309$ & $32905$ \\ \hline
-    \multicolumn{9}{|c|}{dark scenario/loopback} \\ \hline
-    original & $7.86$ & $0.35$ & $8.00$ & $0.00$ & $7.87$ & $0.40$ &
-    $168306$ & $168306$ \\ \hline
-    greedy & $7.88$ & $0.39$ & $8.00$ & $0.05$ & $7.87$ & $0.39$ &
-    $165936$ & $165936$ \\ \hline
-    \multicolumn{9}{|c|}{dark scenario/remote} \\ \hline
-    original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ &
-    $462505$ & $924722$ \\ \hline
-    greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ &
-    $246837$ & $779452$ \\ \hline
+    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
+    \multicolumn{7}{|c|}{bright scenario} \\ \hline
+    original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ 
+    \\ \hline
+    greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$
+    \\ \hline
+    \multicolumn{7}{|c|}{dark scenario} \\ \hline
+    original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ \\ \hline
+    greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ \\ \hline
     %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
   \end{tabular}
   
 \end{table}
 
-From the Table~\ref{tab:quality}, we can find that our greedy scheme
-doesn't affect the fps. 
+
+In the Table~\ref{tab:fps}, we show the fps of the video in different
+stages. The {\it input} tag means the frame generation rate of the
+capturer. {\it sent} and {\it output} means the network sent rate and
+final rendering frame rate respectively. $E$ stands for the
+expectation of the result and $\delta$ is the corresponding standard
+deviation. From this table, fps is always lower in the dark scenario
+even in the original scheme. We can conclude this quality degradation
+is due to the specific implementation of this app. Comparing these two
+extreme cases in the lowest fps and the highest fps, there is no
+degradation of the video quality in fps is found. 
+
+\begin{table}[h]
+  \centering
+  \caption{video latency}
+  \label{tab:latency}
+  \begin{tabular}{|c|c|}
+    \hline
+    & latency (ms) \\ \hline
+    Original & 261 \\ \hline
+    Greedy & 302 \\ \hline
+  \end{tabular}
+\end{table}
+
+
+The Table~\ref{tab:latency} shows the latency measured under different
+schemes in milliseconds. From the result, the scanning operation and
+the greedy determination stage introduce minor latency, about tens of
+milliseconds into video conferencing. 
+
+\subsection{Image fidelity}
+
+There two reasons that the received frames will lose its fidelity in
+LCD-GDP, 1) the luminance information piggybacked in the delivered
+frames is lost due to video compression or network transmission. 2)
+the maximum luminance of consecutive frames increases abruptly.  the
+resemblance between the frames sent and rendered is measured in Peak
+Signal-to-Noise Ratio (PSNR) and Structure SIMilarity (SSIM). To align
+the frames, a black frame is inserted into the streaming every $10$
+frames as the anchors. Then we recorded all the frames on both
+side. We only compare the frames between two anchor frames if there
+are exact $10$ frames recorded on both sides. The resemblance of the
+frames are measured in the case of no scheme, dynamic programming
+algorithm and the greedy algorithm.  The videos measured in the in the
+this experiment are all $3$ minutes. The results are shown in the
+Table~\ref{tab:distortion}
+
+\begin{table}
+  \centering
+  \caption{Image fidelity}
+  
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    & \multicolumn{2}{|c|}{original} & \multicolumn{2}{|c|}{DP} & \multicolumn{2}{|c|}{Greedy} \\ \hline
+    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
+    \multicolumn{7}{|c|}{bright} \\ \hline
+    PSNR & 41.89 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
+    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
+    \multicolumn{7}{|c|}{dusky} \\ \hline
+    PSNR & 41.79 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
+    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
+    \multicolumn{7}{|c|}{dark} \\ \hline
+    PSNR & 44.86 & 6.88 & 41.63 & 9.62 & 41.63 & 9.78 \\ \hline
+    SSIM & 0.97 & 0.01 & 0.97 & 0.01 & 0.97 & 0.01 \\ \hline
+  \end{tabular}
+  \label{tab:distortion}
+\end{table}
+
+From this table, we find the similarity between the frames sent and
+that received in all cases is almost same. So we can conclude that
+little distortion is introduced into the video conferencing by
+applying our LCD-GDP. 
+%% To evaluate the power consumption of our system, we setup the devices
+%% under scenes with different brightness and the power consumption of
+%% the tablet is measured by the power monitor. The results are shown in
+%% ~\ref{tab:power_consumption}.
+ 
+%% installed the original version WebRTC app and an upgraded version
+%% equipped with our dynamic programming scheme. When these two devices
+%% connected to each other, we put them under different environments to
+%% evaluate if our scheme could outperform the original version. Two
+%% extreme environments were selected purposely. One was an extreme
+%% bright environment that our scheme didn't work any more. Under the
+%% other environment, which is an extreme dark case, the backlight could
+%% always be scaled to the lowest threshold($0.4$).
+%% We measured the power
+%% consumption of the tablets in all of these cases and the results are
+%% shown in ~\ref{tab:power_consumption}.
+
+
+%% \begin{table}[h]
+%%   \centering
+%%   \caption{power consumption}
+%%   \label{tab:power_consumption}
+%%   %% device | dark | bright |
+%%   \begin{tabular}{|c|c|c|c|c|} %lcr
+%%     \hline
+%%     & \multicolumn{2}{|c|}{SAMSUNG(dark)} & \multicolumn{2}{|c|}{SAMSUNG(bright)} \\ \hline
+%%     & no-adaption & with adaption & no-adaption & with adaption \\ \hline
+%%     NEXUS(dark) & $\sim{6250}$ mW & $\sim{3810}$ mW & $\sim{6900}$ mW & $\sim{4150}$ mW  \\ \hline
+%%     NEXUS(bright) & $\sim{6500}$ mW & $\sim{6400}$ mW & $\sim{7250}$ mW & $\sim{6800}$ mW \\ \hline
+%%   \end{tabular}
+  
+%% \end{table}
+
+%% From the table, we found that the original version WebRTC app consumed
+%% similar power, which was from $6250$ mA to $7250$ mA, under different
+%% environments. The slight difference are caused by the mutable fps. The
+%% WebRTC app actively reduces the fps if it detects that the environment
+%% gets dark. So the power consumption was found lowest when both the
+%% devices were put in the dark environment. The most observable power
+%% savings were found in the case that the NEXUS was put in the dark
+%% environment. The dimmed frames sent by the NEXUS help the tablet take
+%% advantage of the luminance compensation technique.  Notice that
+%% although our scheme outperformed the original version in the both
+%% bright case. This power reduction comes from the lower fps. The
+%% dynamic programming algorithm, holding too many frames before
+%% delivering them to the rendering module, will definitely degrade the
+%% video quality.
 
 %% \begin{table}[h]
 %%   \centering
@@ -92,65 +233,80 @@ doesn't affect the fps.
 %%   \item{maybe others}
 %% \end{itemize}
 
-Expr 2:
-Compare the distortion of frames among 1) normal case 2) DP 3)
-Greedy. store the frames under different brightness. (90\%-100\%,
-70\%-80\%, 50\%-60\%).
-To align the frames. (Can try index the frames in several pixels)
-\begin{itemize}
-  \item{PSNR}
-  \item{SSIM}
-\end{itemize}
+%% Expr 2:
+%% Compare the distortion of frames among 1) normal case 2) DP 3)
+%% Greedy. store the frames under different brightness. (90\%-100\%,
+%% 70\%-80\%, 50\%-60\%).
+%% To align the frames. (Can try index the frames in several pixels)
+%% \begin{itemize}
+%%   \item{PSNR}
+%%   \item{SSIM}
+%% \end{itemize}
 
 
-\subsection{Power Consumption}
-We conducted a series of simple experiments to evaluate the power
-consumption of our system. Two devices, one NEXUS 4 smartphone and one
-Samsung Galaxy 10 inch tablet, were used in these experiments. We
-installed the original version WebRTC app and an upgraded version
-equipped with our dynamic programming scheme. When these two devices
-connected to each other, we put them under different environments to
-evaluate if our scheme could outperform the original version. Two
-extreme environments were selected purposely. One was an extreme
-bright environment that our scheme didn't work any more. Under the
-other environment, which is an extreme dark case, the backlight could
-always be scaled to the lowest threshold($0.4$). We measured the power
-consumption of the tablets in all of these cases and the results are
-shown in ~\ref{tab:power_consumption}.
 
-
-\begin{table}[h]
-  \centering
-  \caption{power consumption}
-  \label{tab:power_consumption}
-  %% device | dark | bright |
-  \begin{tabular}{|c|c|c|c|c|} %lcr
-    \hline
-    & \multicolumn{2}{|c|}{SAMSUNG(dark)} & \multicolumn{2}{|c|}{SAMSUNG(bright)} \\ \hline
-    & no-adaption & with adaption & no-adaption & with adaption \\ \hline
-    NEXUS(dark) & $\sim{6250}$ mW & $\sim{3810}$ mW & $\sim{6900}$ mW & $\sim{4150}$ mW  \\ \hline
-    NEXUS(bright) & $\sim{6500}$ mW & $\sim{6400}$ mW & $\sim{7250}$ mW & $\sim{6800}$ mW \\ \hline
-  \end{tabular}
-  
-\end{table}
-
-From the table, we found that the original version WebRTC app consumed
-similar power, which was from $6250$ mA to $7250$ mA, under different
-environments. The slight difference are caused by the mutable fps. The
-WebRTC app actively reduces the fps if it detects that the environment
-gets dark. So the power consumption was found lowest when both the
-devices were put in the dark environment. The most observable power
-savings were found in the case that the NEXUS was put in the dark
-environment. The dimmed frames sent by the NEXUS help the tablet take
-advantage of the luminance compensation technique.  Notice that
-although our scheme outperformed the original version in the both
-bright case. This power reduction comes from the lower fps. The
-dynamic programming algorithm, holding too many frames before
-delivering them to the rendering module, will definitely degrade the
-video quality.
 %% The
 %% dynamic programming algorithm has to hold enough frames to adjust
 %% backlight, so that it can not deliver the frames to the rendering
 %% module in time.
 
 
+%% quality of the video in webRTC is self-adjusted. There are two factors
+%% affecting the fps and bitrate: the average luminance of the frames and
+%% the content of the frames. The webRTC app intends to reduce the
+%% fps/bitrate in darker images. Also the static frames gains higher
+%% fps/bitrate other than the frames containing moving objects. To
+%% evaluate how much overhead is introduced by our scheme, we only use
+%% the static scenario as the test case. We expect if our greedy
+%% algorithm won't impair the visual quality of the static scenario,
+%% which features higher fps and bitrate, the quality of scenarios
+%% containing moving objects will not be damaged as well.
+
+
+
+%% \begin{table}[h]
+%%   \centering
+%%   \caption{video quality}
+%%   \label{tab:quality}
+%%   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
+%%   \begin{tabular}{|c|c|c|c|c|c|c|c|c|} %lcr
+%%     \hline
+%%     & \multicolumn{6}{|c|}{fps} & \multicolumn{2}{|c|}{bitrate} \\ \hline
+%%     & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
+%%     & \multicolumn{2}{|c|}{output} & sent & recv
+%%     \\ \hline
+%%     & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ & & \\ \hline
+%%     \multicolumn{9}{|c|}{bright scenario/loopback} \\ \hline
+%%     original & $24.67$ & $1.01$ & $22.73$ & $3.59$ & $15.37$ & $2.44$ &
+%%     $81076$ & $81344$ \\ \hline
+%%     greedy & $24.51$ & $1.06$ & $21.64$ & $2.76$ & $15.19$ & $2.06$ &
+%%     $44832$ & $45193$ \\ \hline
+%%     \multicolumn{9}{|c|}{bright scenario/remote} \\ \hline
+%%     original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ &
+%%     $269094$ & $41583$ \\ \hline
+%%     greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$ &
+%%     $267309$ & $32905$ \\ \hline
+%%     \multicolumn{9}{|c|}{dark scenario/loopback} \\ \hline
+%%     original & $7.86$ & $0.35$ & $8.00$ & $0.00$ & $7.87$ & $0.40$ &
+%%     $168306$ & $168306$ \\ \hline
+%%     greedy & $7.88$ & $0.39$ & $8.00$ & $0.05$ & $7.87$ & $0.39$ &
+%%     $165936$ & $165936$ \\ \hline
+%%     \multicolumn{9}{|c|}{dark scenario/remote} \\ \hline
+%%     original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ &
+%%     $462505$ & $924722$ \\ \hline
+%%     greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ &
+%%     $246837$ & $779452$ \\ \hline
+%%     %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
+%%   \end{tabular}
+  
+%% \end{table}
+
+%% Two devices are used in this measurement, one Samsung 10.1-inch tablet
+%% and one NEXUS 4 smartphone. The data is collected from the tablet. We test the
+%% real-time communication in the resolution of $640$x$480$, and set the
+%% upperbound of the frames generation by the camera as $30$. Both the
+%% dark scenario and the bright scenario are measured. We maintained the
+%% communication at least $5$ minutes. We test the {\it loopback} and the
+%% {\it remote} respectively. The {\it loopback} means the tablet
+%% communicate to itself via network. And the {\it remote} means
+%% communication between two devices.

@@ -10,7 +10,7 @@ pixel luminance. In our system, we decouple them into the following
 three independent modules: the {\bf Scanning} module, the {\bf
  Adjustment} module, and the {\bf Rendering} module. Next we present our
 new approaches in these three modules, respectively. 
-{\bf the label always goes at the end. otherwise, you will get error}
+%% {\bf the label always goes at the end. otherwise, you will get error}
 Figure~\ref{fig:design} illusrates the organization and interaction of these three
 modules.
 
@@ -112,8 +112,7 @@ information is available. This works for VOD, but not video calls.
 \subsubsection{Optimal solution}
 The dynmamic programming solution is trying to find the optimal
 backlight levels across the video playback without violating the
-constraints mentioned before. {\bf need to cite previous work, as this
-is not intended to our contribution in this paper}
+constraints mentioned before~\cite{CAD}. 
 This algorithm is represented by the
 recursion equation~\ref{eq:dp}:
 
@@ -277,15 +276,6 @@ our conjecture hold in practice via experiments.
 %% b_{old} + \Delta_b$.
 
 
-
-\section{Implementation}
-\label{sec:implementation}
-
-We built our system base on AppRTC, which is part of the project
-chromium. This Android app links to libjingle.so, which is the WebRTC
-support library of Chrome browser. The scanning module and adjustment
-module resides inside the libjingle.so and Rendering module is part of
-the Android app.
 
 
 %% \begin{itemize}

@@ -1,4 +1,21 @@
 \section{conclusion}
 \label{sec:conclusion}
 
-The conclusion goes here.
+In this paper, we explored the possibility of applying backlight
+scaling technique for real-time communication on the mobile devices,
+and proposed the LCD-GDP to reduce the power consumption during the
+video calls. We identified the challenges of efficiently migrating the
+computation intensive tasks from offline to online. In order to scan
+each frame for generating luminance histogram only once, we located
+the scanning module at sender side and piggybacked this luminance
+information in duplicated way. We also used a greedy algorithm to
+replace the commonly applied dynamic programming technique. This would
+not introduce significant latency into the communication. Finally, we
+take advantage of the GPU to compensate the pixel luminance in an
+timely manner. We built our LCD-GDP based on the WebRTC implementation
+of chrome and evaluate it as an Anroid app. From the evaluation, upto
+$33\%$ power consumption is saved on average by using our LCD-GDP. At
+the same time, the quality of services in fps and latency stay in the
+same level as the original real-time streaming. Little distortion in
+PSNR and SSIM is found in the LCD-GDP.
+
