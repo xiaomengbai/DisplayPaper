@@ -1,33 +1,33 @@
-\section{Background}
+\section{Background and Related Work}
 \label{sec:background}
 \subsection{Backlight scaling}
 A visible image on a LCD display is produced by both backlight and the
 LCD panel, which stores pixel color information. The perceptual
 luminance is actually the backlight intensity compensated by the
-pixels. The backlight scaling is a technique  exploiting this
+pixels. The backlight scaling is a technique exploiting this
 characteristic.  Figure~\ref{fig:backlightscaling} sketches the
-high-level idea. As shown in the figure, the energy for displaying the
+high-level idea. Power consumption for displaying the
 image can be reduced by dimming the backlight. If nothing else is
 done, it will lead to a darker version of this image. This distortion
 can be compensated by concurrently increasing the luminance component
 of each pixel in this image~\cite{PMLDV03, CHP07, CCS06, CSC02}. And
-increasing the pixel brightness does not increase the power
+increasing the pixel luminance does not increase the power
 consumption of the display.
 
-
-\begin{figure}[!htb]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=.45\textwidth]{./figures/backlightscaling.eps}
+  \includegraphics[width=.5\textwidth]{./figures/backlightscaling.eps}
   \caption{Backlight Scaling on LCD screen}
   \label{fig:backlightscaling}
+  %\vspace{-2em}
 \end{figure}
 
 However, directly applying backlight scaling to video playback faces
-several challenges. Both extracting and enhancing the pixels luminance
+several challenges. Both extracting and enhancing the pixel's luminance
 component frame by frame demand processing a mass of data, and is
 computation intensive.  For this reason, deploying these tasks during
 the playback on the same CPU~\cite{CHP07, CSC02} is not practical
-because of two reasons.  On the one hand, the CPU may not have enough
+because of two reasons.  On one hand, the CPU may not have enough
 time to perform these computation intensive tasks without degrading
 the video quality (e.g., frames per second or FPS) of the video
 playback. On the other hand, the achieved power saving by dimming the
@@ -37,13 +37,14 @@ proposed to skip the pixel compensation stage and use a critical
 backlight level for each frame to avoid distorting the image too
 badly. Ruggiero et al. suggested to offload the luminance adjustment
 tasks to the hardware image processing unit (IPU) integrated in
-Freescale’s multimedia application processor~\cite{RBB08}. It exploits
+Freescale's multimedia application processor~\cite{RBB08}. It exploits
 in a smart and efficient way to implement a hardware assisted image
-compensation.  Pasricha et al.~\cite{PMLDV03} and Cheng et
+compensation. Pasricha et al.~\cite{PMLDV03} and Cheng et
 al.~\cite{CMEDV07} suggested to compute the backlight scaling data on
 a proxy server and substitute the original video with a
-luminance-adjusted version. Liu et al.~\cite{CAD} proposed a dynamic
-programming approach to calculate the optimal luminance.
+luminance-adjusted version. 
+%Liu et al.~\cite{CAD} proposed a dynamic
+%programming approach to calculate the optimal backlight scaling.
  In short, existing schemes (1) only target
 video-on-demand where the video frame information is available in
 advance so that the computing can be done before the playback, and (2)
@@ -52,7 +53,7 @@ consider quality degradation due to backlight dimming. So far, no
 scheme has been considered for real-time video calls.
 
 Compared to video-on-demand, real-time video calls are live streaming,
-where each frame is produced on the fly and highly
+where each frame is produced on the fly and is highly
 delay-sensitive. Furthermore, video calls often involve multiple
 participants, and thus multiple frames from different sources need
 to be combined in real-time, leaving little computing power for other

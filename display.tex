@@ -37,11 +37,13 @@
 \usepackage{algpseudocode}
 \usepackage{mathptmx}
 \usepackage{epstopdf}
-\usepackage[justification=centering,font=small,labelfont=bf]{caption}
-\captionsetup{aboveskip=4pt}
+\usepackage[justification=centering,font=normalsize,labelfont=bf]{caption}
+%\captionsetup{aboveskip=4pt}
+%\usepackage{flushend}
 
 \algnewcommand{\LineComment}[1]{\State \(\triangleright\) #1}
 
+\renewcommand{\baselinestretch}{1.01}
 
 \newtheorem{definition}{Definition}
 \newtheorem{example}{Example}
@@ -120,8 +122,10 @@
 
 \input{abstr}
 
+%\vspace{-1em}
 \input{intro}
 
+%\vspace{-1em}
 \input{background}
 
 \input{design}
@@ -137,9 +141,9 @@
 \bibliographystyle{IEEEtran}
 
 {
- \begin{footnotesize}
+% \begin{footnotesize}
    \bibliography{display}
- \end{footnotesize}
+% \end{footnotesize}
 }
 
 %------------------------------------------------------------------------------

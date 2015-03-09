@@ -15,11 +15,11 @@ LCD-GDP scheme.
 
 \begin{figure}[t]
   \begin{center}
-    \includegraphics[scale=.45]{./figures/power.eps}
+    \includegraphics[scale=.6]{./figures/power.eps}
     \caption{Power consumption of the Samsung tablet during real-time video communication under different scenes.}
     \label{fig:power}
   \end{center}
-  \vspace{-3em}
+  %\vspace{-3em}
 \end{figure}
 
 
@@ -59,7 +59,7 @@ We compare our scheme with the original WebRTC app.
 \noindent{\bf Frame Rate.} 
 To measure the number of frames that are captured, encoded at the
 sender side and decoded and rendered at the receiver side, we use the
-statistics reported by the WebRTC app directly.  We find that at the
+statistics reported by the WebRTC app directly. We find that at the
 sender side, the number of frames that are encoded varies
 significantly if there are moving objects.  The frame rate reaches the
 highest value when the frame content is a static scene.  Since our
@@ -80,10 +80,11 @@ video streaming originating from the Nexus smartphone to the Samsung tablet.
 
 
 \begin{table}[t]
-  \footnotesize
+  \small
   \centering
   \caption{FPS of video stream originating from Nexus 4 smartphone to
     Samsung tablet.}
+	\vspace{0.5em}
   \label{tab:fps}
   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
   \begin{tabular}{|c||c|c||c|c||c|c|} %lcr
@@ -103,7 +104,7 @@ video streaming originating from the Nexus smartphone to the Samsung tablet.
     LCD-GDP & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ \\ \hline
     %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
   \end{tabular}
-  \vspace{-18pt}  
+  %\vspace{-18pt}  
 \end{table}
 
 
@@ -121,7 +122,7 @@ extreme cases in the lowest FPS and the highest FPS,  we find there is no degrad
 
 \noindent{\bf Image Fidelity.} 	
 Fidelity loss could occur in LCD-GDP for two reasons: (i) the maximum pixel luminance of 
-frames increases abruptly, causing the constraint shown in Equation (2) be violated;
+frames increases abruptly, causing the constraint shown in Equation~\cite{eq:distort} be violated;
 and (ii) the luminance information piggybacked in the delivered frames is lost due to video
 compression or network transmission.
 To measure video quality, we calculate the Peak
@@ -198,9 +199,10 @@ However, the PSNR values are still above 40 dB, indicating there is very little 
 
 
 \begin{table}[t]
-	\footnotesize
+	\small
 	\centering
 	\caption{PSNR (dB) and SSIM between the rendered video stream and the original captured frame.}
+	\vspace{0.5em}
 	\begin{tabular}{|c||c|c||c|c|}
 		\hline
 		& \multicolumn{2}{|c||}{Original WebRTC App} & \multicolumn{2}{|c|}{LCD-GDP} \\ \hline
@@ -216,7 +218,7 @@ However, the PSNR values are still above 40 dB, indicating there is very little 
 		SSIM & 0.97 & 0.01  & 0.97 & 0.01 \\ \hline
 	\end{tabular}
 	\label{tab:distortion}
-        \vspace{-18pt}  
+        %\vspace{-18pt}  
 \end{table}
 
 
@@ -236,7 +238,7 @@ we conduct the experiments in the same local area network (LAN).
 %At last, the communication latency is also measured between these two machines. 
 To measure the end-to-end delay, 
 we place the camera on the mobile device in front of a stop watch
-and compare the timestamps rendered on two devices using the method proposed by Yu et al.~\cite{yu2014can}. 
+and compare the timestamps rendered on two devices using the method proposed by Yu et al.~\cite{6848080}. 
 In the original WebRTC app, we find the average latency is $261$ milliseconds 
 during the video call. When the LCD-GDP scheme is applied, the average latency
 is increased to $302$ milliseconds, indicating only about $40$ milliseconds delay are

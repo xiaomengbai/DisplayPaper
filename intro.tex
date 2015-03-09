@@ -2,7 +2,7 @@
 
 With the ever-improving network and mobility support, recently,
 real-time communication software, being standalone or combined with
-social media, have also found their way on mobile devices.  Being able
+social media, have found their way on mobile devices.  Being able
 to support video calls while entirely free or at least cheaper than
 the traditional voice communications, these software, such as
 Skype~\cite{skype}, QQ~\cite{qq}, Apple's Facetime~\cite{facetime},
@@ -12,19 +12,19 @@ among common mobile users.
 However, the limited battery power supply remains as the Achilles'
 heel of mobile devices while real-time video communications are very
 power-hungry. Compared to the video streaming, real-time video calls
-are more demanding. In the real-time video communication, such as 
-video conferencing, the video contents are generated on the fly from
-multiple sources. Even for the one-to-one video call, double frames
-are generated and delivered, which is different from the one-way video-on-demand streaming. Thus, efficiently
-reducing the power consumption for video calls on mobile devices is
+are more demanding. In real-time video communication, such as 
+video conferencing, video contents are generated on the fly from
+multiple sources. Even for one-to-one video call, double frames
+are generated and delivered, which is different from the one-way video-on-demand streaming. 
+Thus, efficiently reducing the power consumption for video calls on mobile devices is
 imperative.
 
 Previously, since the display subsystem on a mobile device often
 consumes about 38\% to 68\% of the total energy during video
 streaming~\cite{AG10}, a few schemes have been designed to reduce the
 power consumption of the display. For a Liquid-Crystal Displays (LCD)
-display, the dominant power consumption is by the backlight
-intensity. Thus to reduce the power consumption, it is desirable to
+display, the dominant power consumption unit is the display backlight. 
+Thus to reduce the power consumption, it is desirable to
 dim the backlight as much as possible while enhancing the luminance of
 the pixels to compensate the quality degradation due to backlight
 dimming.  In this way, the modified images on the screen can maintain
@@ -33,66 +33,66 @@ backlight scaling.
 
 In detail, the backlight scaling technique often consists of three
 stages, i.e., 1) the histogram generation stage, 2) the backlight
-levels determination stage, 3) the pixel compensation stage. The first
+levels determination stage, 3) the pixel luminance compensation stage. The first
 stage and the last stage are both computation intensive due to
 per-pixel manipulation. Therefore, some previous design either ignore
-the luminance compensation~\cite{HLH11}, leading to significant
+the luminance compensation~\cite{HLH11,LHH14}, leading to significant
 quality degradation and user experience unsatisfaction, or demand
-additional computing resources for compensation~\cite{LHH14}, making
-the scheme non-practical for mobile devices.  In the second stage,
+additional computing resources for compensation~\cite{PMLDV03,CMEDV07}, making
+the scheme impractical for mobile devices.  In the second stage,
 some previous research applies the dynamic programming to find the
 globally optimal backlight levels without violating the hardware and
-user experience constraints. Thus, the video frames must be available
+user experience constraints~\cite{HLH11,LHH14}. Thus, the video frames must be available
 in advance.  However, for real-time video calls, this is impossible
-because the video content is generated on the fly.  Furthermore, being
+because the video content is generated on the fly. Furthermore, being
 highly sensitive to delay, real-time video calls cannot tolerate the
-delay that may be caused by the dynamic programming. In addition, by
+delay that may be caused by dynamic programming. In addition, by
 often supporting multiple participants and thus receiving data from
 multiple sources simultaneously, the backlight scaling technique
 cannot be directly used for video calls.
 
-In this paper, we set to explore the display power saving for video
+In this paper, we set to explore display power saving for video
 calls on mobile devices. Since there are often less background changes
-and a slower frame rate in practical video calls, we propose a greedy
-display power saving scheme, called {\it LCD-GDP}.  Similar to the
+and a slower frame rate in practical video calls, we propose a Greedy
+Display Power saving scheme, called {\it LCD-GDP}.  Similar to the
 dynamic programming approach for video streaming, there are same
 constraints that our greedy algorithm must conform to. The {\it first}
 is that the backlight variations between neighboring frames must be
 limited. Otherwise the flickering effect is expected in the user
-experience. The {\it second} is that the backlight should not be
-scaled down too much to cause image distortion.  The {\it third} is
+experience~\cite{iranli2006hvs}. The {\it second} is that the backlight should not be
+scaled down too much to cause image distortion. And the {\it third} is
 that the backlight cannot be adjusted too frequently because the
-hardware needs some time to respond.
+hardware needs some time to respond~\cite{pasricha2004dynamic}.
 
-To avoid processing the same frame repeatedly, in LCD-GDP, {\it
-  first}, we migrate the histogram generation to the sender side for
-video calls. We put the luminance information inside each frame
-without building an additional channel. Also duplicated information is
-hidden for the possible loss during the video encoding/decoding and
+To avoid processing the same frame repeatedly, in LCD-GDP, {\it first},
+we migrate the per-frame pixel luminance histogram generation 
+to the sender side for video calls. We put the luminance information inside each frame
+without building an additional channel. Multiple pieces of this information are put
+in the frame to account for possible loss during the video encoding/decoding and
 the network transmission. {\it Second}, since GPU is commonly equipped
-in the mobile devices, we take advantage of GPU to offload some tasks
-from the CPU. For the purpose of rendering the received frames in a
-timely manner, we use the OpenGL ES 2.0 shaders to perform the pixel
-enhancement.  Moreover, the power savings will not be offset by
-activating GPU since GPU is widely used in the video conferencing for
+on mobile devices, we take advantage of GPU to offload some tasks
+from the CPU. To render the received frames in a
+timely manner, we use the OpenGL ES 2.0 shaders to perform the pixel luminance
+enhancement.  Moreover, the power saved at the display will not be offset by
+using the GPU since GPU is already used in the video conferencing for
 composing frames together and then rendering them.
 
 To evaluate the performance of our design, we implement LCD-GDP into
 WebRTC and run experiments on a tablet and a smartphone. Experimental
-results show that by using the LCD-GDP, upto $33.2\%$ power
+results show that by using the LCD-GDP, up to $33.2\%$ power
 consumption can be saved on average. Our evaluations of the video call
 quality based on the frames per second received, the latency, and
-image fidelity using PSNR (Peak-Signal-to-Noise) and SSIM (Structure
-SIMilarity) show that LCD-GDP introduces negligible impact on the
+image fidelity using PSNR (Peak-Signal-to-Noise Ratio) and SSIM (Structure
+SIMilarity) also show that LCD-GDP introduces negligible impact on the
 received video call quality.
 
 
-This paper is organized as follows. We describe some background
+This remainder of the paper is organized as follows. We describe some background
 information for both backlight scaling and WebRTC in Section
-\ref{sec:background}. We present our design in Section
+\ref{sec:background}. We present our design of LCD-GDP in Section
 \ref{sec:design} and the implementation details in Section
-\ref{sec:implementation}. We discuss the evaluation in Section
-\ref{sec:evaluation} and conclude our work in Section
+\ref{sec:implementation}. Evaluation results are discussed in Section
+\ref{sec:evaluation} and we conclude our work in Section
 \ref{sec:conclusion}.
 
 %% old 
