@@ -1,18 +1,15 @@
 \section{System Design}
 \label{sec:design}
-In this section, we present our design of LCD-GDP.
 
-\subsection{System components}
-As we discussed before, the backlight scaling  generally
-involves three steps for 1) generating the luminance histogram, 2)
-determining the proper backlight levels and 3) compensating the
-pixel luminance. In our system, we decouple them into the following
-three independent modules: the {\bf Scanning} module, the {\bf
- Adjustment} module, and the {\bf Rendering} module. Next we present our
-new approaches in these three modules, respectively. 
-%% {\bf the label always goes at the end. otherwise, you will get error}
-Figure~\ref{fig:design} illusrates the organization and interaction of these three
-modules.
+\subsection{System Components}
+As we discussed before, the backlight scaling generally involves three
+steps for 1) generating the luminance histogram, 2) determining the
+proper backlight levels and 3) compensating the pixel luminance. In
+our system, we decouple them into the following three independent
+modules: the {\bf Scanning} module, the {\bf Adjustment} module, and
+the {\bf Rendering} module. Next we present our new approaches in
+these three modules, respectively. Figure~\ref{fig:design} illustrates
+the organization and interaction of these three modules.
 
 \begin{figure}[t]
   \begin{center}
@@ -52,15 +49,16 @@ either is covered by other frames, or is negligible when the frame is
 resized to a smaller size.  Since the luminance information may also get
 lost in the encoding process and network transmission, we propose to
 duplicate this information and set them at the positions known by both
-ends. The receiver side extracts the information and uses the value
-elected from the majority, and then passes the value to the {\bf
+ends. The receiver side extracts the information and uses the maximum value
+among the candidates, and then passes the value to the {\bf
   Adjustment} module for backlight scaling.
 
 [{\bf Greedy Luminance Adjustment}]: The {\bf Adjustment} module is located at the receiver side. This
-module aims to find the apprapriate backlight levels from the
+module aims to find the appropriate backlight levels from the
 luminance information. In the VOD, global luminance information is
 required to prevent the flickering effects, which is caused by scaling
-the backlight with great variation too frequently. But 
+the backlight with great variation too frequently--VOD usually
+involves numerous scene switches. But 
  the real-time video communication is highly delay-sensitive, so buffering a certain
 amount of frames for the purpose of waiting for enough luminance
 information accumulated (and thus calculate the optimal backlight levels) is not
@@ -81,7 +79,7 @@ typically the GPUs are enabled for resizing, composing the received
 frames and performing RGB-YUV conversion. Thus,  little power consumption
 cost is expected by the adding the pixel compensation task. This
 module also scales the backlight levels to make the images on the
-screen perceived by the user with no distorion from the original
+screen perceived by the user with no distortion from the original
 version.
 
 \subsection{Backlight determination algorithms}
@@ -95,8 +93,8 @@ power savings. However, this may undermine the user experience by
 introducing flickering effects and also the hardware may not be able
 to respond to the backlight instructions promptly.  To find the lowest
 backlight levels without violating the user experience constraint and
-the hardware response time constraint, we can formulate this prblem
-and solve via dyanamic programming.  For this solution to work, we
+the hardware response time constraint, we can formulate this problem
+and solve via dynamic programming.  For this solution to work, we
 must have all the frame information.
 Next, we will illustrate the optimal solution, assuming all the frame
 information is available. This works for VOD, but not video calls. 
@@ -110,7 +108,7 @@ information is available. This works for VOD, but not video calls.
 %% level when the $t$th frame is rendering.
 
 \subsubsection{Optimal solution}
-The dynmamic programming solution is trying to find the optimal
+The dynamic programming solution is trying to find the optimal
 backlight levels across the video playback without violating the
 constraints mentioned before~\cite{CAD}. 
 This algorithm is represented by the
@@ -125,7 +123,7 @@ from the beginning of the video to the $t$'th frame while the
 backlight level of the $t$'th frame is scaled to $b$. The $t'$ is the
 frame index where the last backlight level is determined and the $b'$
 is the last determined backlight level. When this algorithm is seeking
-the optimal solution, it must comform to the following constraints:
+the optimal solution, it must conform to the following constraints:
 
 %% \[
 %%  \left \{
@@ -156,7 +154,7 @@ The equation~\ref{eq:distort} represents the distortion constraint,
 where the $b$ follows the $Y^{max}$ of the corresponding frame and
 so does the $b'$. Otherwise the distortion will be introduced. The
 user experience constraint is quantified as the relationship between
-the $b$ and the $b'$ in the euquation~\ref{eq:userexp}. The neighboring
+the $b$ and the $b'$ in the equation~\ref{eq:userexp}. The neighboring
 $b$ and $b'$ are not allowed to differentiate too much to prevent the
 flickering effects. We define the $\Delta_b$ as the upperbound of the
 luminance variation of the continuous frames. The last equation~\ref{eq:hardware}
@@ -200,12 +198,12 @@ it is impractical to adjust the backlight levels in the real-time
 video call sessions in
 this way. The dynamic programming requires a certain amount of frames
 available (ideally, all frames available) before
-it determines the bakclight levels, and this leads to significant
+it determines the backlight levels, and this leads to significant
 delay between the sender and the receiver. 
 Therefore, in our system, we propose a greedy algorithm. In this solution,
-we attempt to relax the constraints in the dyanmic
+we attempt to relax the constraints in the dynamic
 programming--our scheme ignores the distortion constraint in
-euqation~\ref{eq:distort}. We expect our scheme will not lead to significant
+equation~\ref{eq:distort}. We expect our scheme will not lead to significant
  distortion based upon the intuition that few scene switches are
 likely to be found during the video call sessions. 
 
@@ -255,9 +253,9 @@ likely to be found during the video call sessions.
 The pseudo code of 
 our greedy algorithm is shown in the
 Algorithm~\ref{alg:greedy}. The backlight level of $t$'th frame, the
-$b_t$, only depends on the last adjustd backlight level $b'$, its
+$b_t$, only depends on the last adjusted backlight level $b'$, its
 index $t'$ and the maximum luminance of current frame $Y_t^{max}$. In
-the adjustment, the $b_t$ still comforms to the constraints represented
+the adjustment, the $b_t$ still conforms to the constraints represented
 in equation~\ref{eq:userexp} and \ref{eq:hardware}. The distortion may
 occur if the $Y_t^{max}$ and $b_t$ can not satisfy the
 equation~\ref{eq:distort}. With the assumption of that there is no
@@ -301,7 +299,7 @@ our conjecture hold in practice via experiments.
 
 
 %% This is not advisable in
-%% the real-time communication since latency is inacceptable in 
+%% the real-time communication since latency is unacceptable in 
 %% This
 %% component is used to accept frames decoded from the decoder. 
 %% This component
@@ -322,7 +320,7 @@ our conjecture hold in practice via experiments.
 %% module accepted all frames captured by the capturer in YUV
 %% format. Before these frames are sent to the encoder, the scanning
 %% module find out the maximum luminance in this frame and write this
-%% value at the lower cornors. Since this information may lose in future
+%% value at the lower corners. Since this information may lose in future
 %% encoding/decoding and network transmission, we write redundant values
 %% into the frame.
 
@@ -331,7 +329,7 @@ our conjecture hold in practice via experiments.
 %% collect such information in advance. This scanning operation has to be
 %% performed with the frame rendering simultaneously. As a result, if
 %% the videos must satisfy some quality requirement in fps, the scanning
-%% moduel has only limited time to generate the luminance histogram. For
+%% module has only limited time to generate the luminance histogram. For
 %% example, a conversation streaming of $30$ fps can provide at most ~$33$
 %% ms for the each frame being scanned. Then if considering the latency of
 %% accessing main memory is the order of $100$ ns, then an estimation of $92$ ms is
@@ -342,8 +340,8 @@ our conjecture hold in practice via experiments.
 %% one frame in a video of $30$ fps -- depends on the quality of the
 %% video. Considering the latency of accessing main memory is the order
 %% of $100$ ns, ~$92$ ms is required to generate the luminance
-%% histogram of a $1280$x$720$ image. This operation definately degrades
-%% this video streaming by decreacing the fps. 
+%% histogram of a $1280$x$720$ image. This operation definitely degrades
+%% this video streaming by decreasing the fps. 
 
 %% (/ (* 100 (* 1280 720)) 1000000.0)
 %% (/ (* 640 480 100) 1000000.0)
@@ -364,15 +362,15 @@ our conjecture hold in practice via experiments.
 %% exceed $10$ in a high quality conversation session. If we are
 %% satisfied with the upper bound of $15$ fps, and a low-quality image of
 %% $640$x$480$. we can use the CPU to do this work, otherwise, we have
-%% launch the GPU to get the historgram data. However the data calculated
+%% launch the GPU to get the histogram data. However the data calculated
 %% from GPU must be copied between GPU memory and CPU memory. So this is
-%% not so effecient if with low quality image. 
+%% not so efficient if with low quality image. 
 
 %% 1) location 2) 
 
 %% The system logically contains three components. The first one is the
 %% {\bf Scanning module}, which is responsible of scanning YUV frames for
-%% liminance information.  Unlike the case of playing VOD or local
+%% luminance information.  Unlike the case of playing VOD or local
 %% Videos, real-time communication is featured both frame generation and
 %% frame rendering. Hence this module can either locate at sender side,
 %% before the encoder, or receiver side, after the decoder. The sender is

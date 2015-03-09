@@ -1,21 +1,23 @@
 \section{conclusion}
 \label{sec:conclusion}
+Video communications are power-hungry applications. Real-time video calls add additional challenges because real-time video calls are highly delay sensitive and no video frames can be known in advance. In this paper, we explore the possibility of using backlight scaling technique to save the display power consumption during real-time video calls. For this purpose, we have designed and implemented LCD-GDP. In LCD-GDP, the lumiance scanning and generation is migrated to the sender side during video capturing and the information is piggybacked to the receiver. Furthermore, we propose a greedy algorithm to replace the dynamic programming approach used for video-on-demand. Lastly, LCD-GDP leverages GPU instead of CPU to conduct the real-time luminance compensation. We build LCD-GDP based on the WebRTC and our evaluations on a smartphone and a tablet shows that upto 33\% of power consumption can be saved without affecting the video call quality.
 
-In this paper, we explored the possibility of applying backlight
-scaling technique for real-time communication on the mobile devices,
-and proposed the LCD-GDP to reduce the power consumption during the
-video calls. We identified the challenges of efficiently migrating the
-computation intensive tasks from offline to online. In order to scan
-each frame for generating luminance histogram only once, we located
-the scanning module at sender side and piggybacked this luminance
-information in duplicated way. We also used a greedy algorithm to
-replace the commonly applied dynamic programming technique. This would
-not introduce significant latency into the communication. Finally, we
-take advantage of the GPU to compensate the pixel luminance in an
-timely manner. We built our LCD-GDP based on the WebRTC implementation
-of chrome and evaluate it as an Anroid app. From the evaluation, upto
-$33\%$ power consumption is saved on average by using our LCD-GDP. At
-the same time, the quality of services in fps and latency stay in the
-same level as the original real-time streaming. Little distortion in
-PSNR and SSIM is found in the LCD-GDP.
+%% In this paper, we explored the possibility of applying backlight
+%% scaling technique for real-time communication on the mobile devices,
+%% and proposed the LCD-GDP to reduce the power consumption during the
+%% video calls. We identified the challenges of efficiently migrating the
+%% computation intensive tasks from offline to online. In order to scan
+%% each frame for generating luminance histogram only once, we located
+%% the scanning module at sender side and piggybacked the luminance
+%% information in duplicated way. We also used a greedy algorithm to
+%% replace the commonly applied dynamic programming technique for keeping
+%% the communication latency as low as possible.  Finally, we take
+%% advantage of the GPU to compensate the pixel luminance and to make
+%% color conversation in a timely manner. We built our LCD-GDP into a
+%% WebRTC app on Android platform and then evaluated the
+%% performance. From the evaluation, upto $33\%$ power consumption is
+%% saved on average by using our LCD-GDP. At the same time, the quality
+%% of services in fps and latency stay in the same level as the original
+%% real-time streaming. Little distortion in PSNR and SSIM is introduced
+%% by activating LCD-GDP.
 

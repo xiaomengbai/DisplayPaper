@@ -1,76 +1,91 @@
 \section{evaluation}
 \label{sec:evaluation}
-We conducted all the experiments on two devices: one NEXUS 4
-smartphone and one Samsung Galaxy 10.1-inch tablet. As the
-additional stages are added into the video conferencing, we first
-examine if our implementation will impact the video streaming
-quality. And then the amounts of power consumption reduced is
-evaluated by using the monsoon power monitor. 
 
+To evaluate the performance of LCD-GDP, we conducted experiments with
+two devices: one Nexus 4 smartphone and one Samsung Galaxy 10.1-inch
+tablet.  We set up video calls between the two devices in the same LAN in order to minimize the impact of the network and we measure the
+real power consumption using the Monsoon power monitor~\cite{monsoon}.
+In addition, we examine if video call quality has been affected by our
+LCD-GDP scheme.
+
+ 
 \subsection{Power Consumption}
+  
+\setlength{\belowcaptionskip}{-10pt}
 
-\begin{figure}[t]
+\begin{figure}[ht]
   \begin{center}
-  \includegraphics[scale=.5]{./figures/power.eps}
-  \caption{Power consumption of real-time communication}
-  \label{fig:power}
+    \includegraphics[scale=.5]{./figures/power.eps}
+    \caption{Power consumption of the Samsung tablet during real-time video communication under different scenes.}
+    \label{fig:power}
   \end{center}
 \end{figure}
 
 
-We also measured the power consumption when there is real-time
-communication channel built between these two devices. To evaluate the
-effect of our system, we test the power consumption under scenes with
-different levels of brightness. A two-minute conversation is conducted
-in each experiment. The scenes can be tagged with {\it bright}, {\it
-  dusky} and {\it dark}, which make backlight level set to $0.99$,
-$0.75$ and $0.42$ on average in our system. Also we measured the power
-consumption of the original version of WebRTC app. The results are
-plot on figure~\ref{fig:power}. The x-axis is the time in seconds, and
-the y-axis is the power consumption in walts. In this figure, power
-consumption of the original WebRTC app under different scenes is
-almost in same level so only the result under bright environment is
-plot, which is $6.935$ walts on average. This value is considered as
-the baseline and the power consumption of our system is found slightly
-higher than it, which is $7.160$ walts. The reason is that extra
-modules are integrated into the system but the backlight has never
-been dimmed across the conversation. In the dusky and dark case,
-$6.235$ ($12.92\%$) walts and $4.783$ ($33.20\%$) walts is consumed on
-average by dimming the backlight intensity. The beginning descendent
-gradient shows the process of the greedy algorithm dimming the
-backlight intensity.
-
+We measure the power consumption under scenes with different levels of
+brightness.  These scenes are tagged with {\it bright}, {\it dusky}
+and {\it dark}.  Under the {\it bright} scene, the maximum pixel
+luminance of frames is close to 255, which leaves our LCD-GDP scheme
+very little space for backlight scaling.  Under the {\it dusky} and
+{\it dark} scenes, with smaller maximum luminance value (about 190 and
+107, respectively), we can save more power by dimming the backlight
+and maintain the observed brightness via luminance compensation.  We
+compare the power consumption of our LCD-GDP scheme under different
+scenes with the power consumption of the original version of WebRTC
+app.  The results are shown in Figure~\ref{fig:power}.  Since the
+power consumption of the original WebRTC app under different scenes is
+almost the same, we only plot the result under bright environment in
+this figure, which is $6.935$ watts on average.  This value is
+considered as the baseline.  Under the same {\it bright} scene, and
+the power consumption of our LCD-GDP is $7.160$ watts, slightly higher
+than the baseline.  This is because extra modules are integrated into
+the system, consuming more power, while the backlight is never dimmed
+throughout the conversation.  In the {\it dusky} and {\it dark} scene
+experiments, the backlight intensity is gradually dimmed by the greedy
+algorithm, reducing the power consumption shown as the beginning
+descendent gradient.  As a result, only $6.235$ watts and $4.783$
+watts power is consumed on average, saving $12.92\%$ and $33.20\%$
+power, respectively.
+%
 
 \subsection{Video quality}
-In worrying about our scheme will make the quality of the video calls
-degrades, we measured the quality metrics in frames per second (fps)
-and latency. The comparison is made by our greedy scheme and the
-original version. All the results are reported by the webRTC app
-itself. 
 
+We next examine the quality of video calls made under our LCD-GDP
+scheme.  We focus on three metrics: frames per second (FPS), peak
+signal to noise ratio (PSNR), and user observed video call latency.
+We compare our scheme with the original WebRTC app.
 
-In the measurement, the fps metric varied in great range if moving
-objects is involved into the frames. The frame rate reached the
-highest threshold if the frame content is a static scene. Only the
-static scene is used in our experiment.  We expect if our scheme will
-not impact the video streaming with higher fps, it won't impact the
-one with lower fps as well. We measured the fps under scenes with
-different brightness and the resolution of the video streaming is set as
-$640$x$480$. In the webRTC app, the frame rate of generation is
-limited to $30$ fps and at most $15$ frames are rendered per
-second. At least $5$ minutes streaming is maintained in each
-experiment. The data is collected from the Samsung tablet. 
+To measure the number of frames that are captured, encoded at the
+sender side and decoded and rendered at the receiver side, we use the
+statistics reported by the WebRTC app directly.  We find that at the
+sender side, the number of frames that are encoded varies
+significantly if there are moving objects.  The frame rate reaches the
+highest value when the frame content is a static scene.  Since our
+scheme is agnostic to frame content, we only consider static scene in
+our experiments.  This allows us to evaluate our scheme during video
+call with a large number of frames per second.  We expect if our scheme
+will not impact the video call with higher FPS, it will not impact the
+calls with lower FPS either.  We set the resolution of captured video
+to $640\times 480$ and measured the FPS under scenes with different
+brightness.  Note that in the WebRTC app where we incorporated our
+LCD-GDP scheme, the frame rate of generation is limited to $30$ FPS
+and at most $15$ frames are rendered per second. In each experiment,
+the video call lasted at least $5$ minutes. During the video call, the FPS metrics is recorded per second. 
+Then we report the statistical results of the FPS in different stages for the
+video streaming originating from the NEXUS smartphone to the Samsung tablet.
 
 
 
 \begin{table}[h]
+  \small
   \centering
-  \caption{video frames per second}
+  \caption{FPS of streaming originating from NEXUS smartphone to
+    Samsung tablet}
   \label{tab:fps}
   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
   \begin{tabular}{|c|c|c|c|c|c|c|} %lcr
     \hline
-    & \multicolumn{6}{|c|}{fps} \\ \hline
+    & \multicolumn{6}{|c|}{FPS} \\ \hline
     & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
     & \multicolumn{2}{|c|}{output}
     \\ \hline
@@ -89,59 +104,43 @@ experiment. The data is collected from the Samsung tablet.
 \end{table}
 
 
-In the Table~\ref{tab:fps}, we show the fps of the video in different
+In Table~\ref{tab:fps}, we show the FPS of the video in different
 stages. The {\it input} tag means the frame generation rate of the
-capturer. {\it sent} and {\it output} means the network sent rate and
+capturer. {\it sent} and {\it output} mean the network sent rate and
 final rendering frame rate respectively. $E$ stands for the
 expectation of the result and $\delta$ is the corresponding standard
-deviation. From this table, fps is always lower in the dark scenario
-even in the original scheme. We can conclude this quality degradation
+deviation. The table shows that FPS is always lower in the dark scenario
+even in the original scheme. We find this quality degradation
 is due to the specific implementation of this app. Comparing these two
-extreme cases in the lowest fps and the highest fps, there is no
-degradation of the video quality in fps is found. 
+extreme cases in the lowest FPS and the highest FPS,  we find there is no degradation of video quality in terms of FPS.
 
-\begin{table}[h]
-  \centering
-  \caption{video latency}
-  \label{tab:latency}
-  \begin{tabular}{|c|c|}
-    \hline
-    & latency (ms) \\ \hline
-    Original & 261 \\ \hline
-    Greedy & 302 \\ \hline
-  \end{tabular}
-\end{table}
-
-
-The Table~\ref{tab:latency} shows the latency measured under different
-schemes in milliseconds. From the result, the scanning operation and
-the greedy determination stage introduce minor latency, about tens of
-milliseconds into video conferencing. 
-
-\subsection{Image fidelity}
-
-There two reasons that the received frames will lose its fidelity in
-LCD-GDP, 1) the luminance information piggybacked in the delivered
-frames is lost due to video compression or network transmission. 2)
-the maximum luminance of consecutive frames increases abruptly.  the
-resemblance between the frames sent and rendered is measured in Peak
+Potentially, with LCD-GDP, there are two possible reasons that may
+cause the received frames to lose image fidelity: 1) the luminance
+information piggybacked in the delivered frames is lost due to video
+compression or network transmission, 2) the maximum luminance of
+consecutive frames increases abruptly. To investigate this potential
+quality loss, we measured the received video quality using both Peak
 Signal-to-Noise Ratio (PSNR) and Structure SIMilarity (SSIM). To align
 the frames, a black frame is inserted into the streaming every $10$
-frames as the anchors. Then we recorded all the frames on both
-side. We only compare the frames between two anchor frames if there
-are exact $10$ frames recorded on both sides. The resemblance of the
-frames are measured in the case of no scheme, dynamic programming
-algorithm and the greedy algorithm.  The videos measured in the in the
-this experiment are all $3$ minutes. The results are shown in the
-Table~\ref{tab:distortion}
+frames as the anchor. Then we recorded all the frames on both
+sides. We only compare the frames between two anchor frames if there
+are exact $10$ frames recorded on both sides.  The resemblance of the
+frames is measured in the case of  original WebRTC implementation
+("Original" in the table), using dynamic programming for luminance
+adjustment ("DP" in the table), and our greedy algorithm ("Greedy" in
+the table).  We conducted this experiments under the same scenes where
+we performed the power consumption experiment. The length of the
+videos measured in  this experiment are all $3$ minutes. The results
+are shown in the Table~\ref{tab:distortion}.
 
-\begin{table}
+\begin{table}[h]
+  \small
   \centering
   \caption{Image fidelity}
   
   \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-    & \multicolumn{2}{|c|}{original} & \multicolumn{2}{|c|}{DP} & \multicolumn{2}{|c|}{Greedy} \\ \hline
+    & \multicolumn{2}{|c|}{Original} & \multicolumn{2}{|c|}{DP} & \multicolumn{2}{|c|}{Greedy} \\ \hline
     & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
     \multicolumn{7}{|c|}{bright} \\ \hline
     PSNR & 41.89 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
@@ -156,10 +155,164 @@ Table~\ref{tab:distortion}
   \label{tab:distortion}
 \end{table}
 
-From this table, we find the similarity between the frames sent and
-that received in all cases is almost same. So we can conclude that
-little distortion is introduced into the video conferencing by
-applying our LCD-GDP. 
+%% In this table, we show the expectation and standard deviation in both
+%% PSNR and SSIM respectively.  From the results of PSNR and SSIM, the
+%% similarity of frames between sender and receiver stays almost same in
+%% bright and dusky scenes. In the dark scenes, our scheme undermine the
+%% resemblance of the images in PSNR. The reason is in the dark
+%% environment, the frames transmitted have lower contrast. The luminance
+%% information stored in the frames will lose in higher probability other
+%% than the previous two cases. But the PSNR result of $41.63$ are still
+%% a good rendered quality. So we can conclude that little distortion is
+%% introduced into the video conferencing by applying our LCD-GDP.
+
+From the table, we can see in the dusky setting, the PSNR for
+original, DP, and Greedy is $41.89\pm4.85$, $41.57\pm4.96$ and
+$41.79\pm4.85$ respectively. The DP and the Greedy algorithm both make
+no promotion on this metric. The corresponding SSIM values are all
+$0.98\pm0.01$, comfirming that there is no difference perceived by the
+user. Similar results are observed in the case of bright and dark
+cases.
+
+
+At last, the communication latency is also measured between these two
+machines. We use the method proposed in~\cite{yu2014can}. In the
+original version app, $261$ milliseconds of latency on average is found
+during the video call. When applying the LCD-GDP, the average latency
+increases to $302$ milliseconds. Only $40$ milliseconds are
+introduced on average. 
+
+
+%% \begin{table}[h]
+%%   \centering
+%%   \caption{video latency}
+%%   \label{tab:latency}
+%%   \begin{tabular}{|c|c|}
+%%     \hline
+%%     & latency (ms) \\ \hline
+%%     Original & 261 \\ \hline
+%%     Greedy & 302 \\ \hline
+%%   \end{tabular}
+%% \end{table}
+
+
+
+%% The Table~\ref{tab:latency} shows the latency measured under different
+%% schemes in milliseconds. From the result, the scanning operation and
+%% the greedy determination stage introduce minor latency, about tens of
+%% milliseconds into video conferencing. 
+
+
+
+
+%% We conducted all the experiments on two devices: one NEXUS 4
+%% smartphone and one Samsung Galaxy 10.1-inch tablet. We first examine
+%% how much energy can we saved by using the LCD-GDP during the real-time
+%% communication. As the
+%% additional stages are added into the video conferencing, we then
+%% evaluate if our implementation will impact the video streaming
+%% quality. Finally we measured if our scheme will introduce distortion
+%% into the video calls. 
+
+%% \subsection{Power Consumption}
+
+%% \begin{figure}[t]
+%%   \begin{center}
+%%   \includegraphics[scale=.5]{./figures/power.eps}
+%%   \caption{Power consumption of real-time communication}
+%%   \label{fig:power}
+%%   \end{center}
+%% \end{figure}
+
+
+%% We measured the power consumption of the real-time
+%% communication between these two devices. To evaluate the
+%% effect of our system, we test the power consumption under scenes with
+%% different levels of brightness. A two-minute conversation is conducted
+%% in each experiment. The scenes can be tagged with {\it bright}, {\it
+%%   dusky} and {\it dark}, which make backlight level set to $0.99$,
+%% $0.75$ and $0.42$ on average in our system. Also we measured the power
+%% consumption of the original version of WebRTC app. The results are
+%% plot on figure~\ref{fig:power}. The x-axis is the time in seconds, and
+%% the y-axis is the power consumption in walts. In this figure, power
+%% consumption of the original WebRTC app under different scenes is
+%% almost in same level so only the result under bright environment is
+%% plot, which is $6.935$ walts on average. This value is considered as
+%% the baseline and the power consumption of our system is found slightly
+%% higher than it, which is $7.160$ walts. The reason is that extra
+%% modules are integrated into the system but the backlight has never
+%% been dimmed across the conversation. In the dusky and dark case,
+%% $6.235$ ($12.92\%$) walts and $4.783$ ($33.20\%$) walts is consumed on
+%% average by dimming the backlight intensity. The beginning descendent
+%% gradient shows the process of the greedy algorithm dimming the
+%% backlight intensity.
+
+
+%% \subsection{Video quality}
+%% In worrying about our scheme will make the quality of the video calls
+%% degrade, we measured the quality metrics in frames per second (fps)
+%% and latency. The comparison is made by our greedy scheme and the
+%% original version. All the results are reported by the webRTC app
+%% itself. 
+
+%% In the measurement, the fps metric varied in great range if moving
+%% objects is involved into the frames. The frame rate reached the
+%% highest threshold if the frame content is a static scene. Only the
+%% static scene is used in our experiment.  We expect if our scheme will
+%% not impact the video streaming with higher fps, it won't impact the
+%% one with lower fps as well. We measured the fps under scenes with
+%% different brightness and the resolution of the video streaming is set as
+%% $640$x$480$. In the webRTC app, the frame rate of generation is
+%% limited to $30$ fps and at most $15$ frames are rendered per
+%% second. At least $5$ minutes streaming is maintained in each
+%% experiment. The data is collected from the Samsung tablet. 
+
+
+%% \begin{table}[h]
+%%   \centering
+%%   \caption{video frames per second}
+%%   \label{tab:fps}
+%%   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
+%%   \begin{tabular}{|c|c|c|c|c|c|c|} %lcr
+%%     \hline
+%%     & \multicolumn{6}{|c|}{fps} \\ \hline
+%%     & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
+%%     & \multicolumn{2}{|c|}{output}
+%%     \\ \hline
+%%     & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
+%%     \multicolumn{7}{|c|}{bright scenario} \\ \hline
+%%     original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ 
+%%     \\ \hline
+%%     greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$
+%%     \\ \hline
+%%     \multicolumn{7}{|c|}{dark scenario} \\ \hline
+%%     original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ \\ \hline
+%%     greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ \\ \hline
+%%     %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
+%%   \end{tabular}
+  
+%% \end{table}
+
+
+%% In the Table~\ref{tab:fps}, we show the fps of the video in different
+%% stages. The {\it input} tag means the frame generation rate of the
+%% capturer. {\it sent} and {\it output} means the network sent rate and
+%% final rendering frame rate respectively. $E$ stands for the
+%% expectation of the result and $\delta$ is the corresponding standard
+%% deviation. From this table, fps is always lower in the dark scenario
+%% even in the original scheme. We can conclude this quality degradation
+%% is due to the specific implementation of this app. Comparing these two
+%% extreme cases in the lowest fps and the highest fps, there is no
+%% degradation of the video quality in fps is found. 
+
+%% The communication latency is also measured between these two
+%% machine. We use the method proposed in~\cite{yu2014can}. In the
+%% original version, $261$ milliseconds of latency on average is found
+%% during the video call. When applying the LCD-GDP, the average latency
+%% increases to $302$ milliseconds. Only $40$ milliseconds are
+%% introduced. 
+
+
 %% To evaluate the power consumption of our system, we setup the devices
 %% under scenes with different brightness and the power consumption of
 %% the tablet is measured by the power monitor. The results are shown in
