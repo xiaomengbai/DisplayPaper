@@ -1,8 +1,5 @@
 \section{Background}
 \label{sec:background}
-In this section, we briefly introduce the backlight scaling and WebRTC
-for real-time video calls.
-
 \subsection{Backlight scaling}
 A visible image on a LCD display is produced by both backlight and the
 LCD panel, which stores pixel color information. The perceptual
@@ -45,7 +42,9 @@ in a smart and efficient way to implement a hardware assisted image
 compensation.  Pasricha et al.~\cite{PMLDV03} and Cheng et
 al.~\cite{CMEDV07} suggested to compute the backlight scaling data on
 a proxy server and substitute the original video with a
-luminance-adjusted version. In short, existing schemes (1) only target
+luminance-adjusted version. Liu et al.~\cite{CAD} proposed a dynamic
+programming approach to calculate the optimal luminance.
+ In short, existing schemes (1) only target
 video-on-demand where the video frame information is available in
 advance so that the computing can be done before the playback, and (2)
 demand additional infrastructure support for compensation or do not
@@ -55,11 +54,11 @@ scheme has been considered for real-time video calls.
 Compared to video-on-demand, real-time video calls are live streaming,
 where each frame is produced on the fly and highly
 delay-sensitive. Furthermore, video calls often involve multiple
-participants, and thus multiple frames from different sources needed
+participants, and thus multiple frames from different sources need
 to be combined in real-time, leaving little computing power for other
 tasks, such as pixel luminance compensation.
 
-\subsection{Video Calls and WebRTC}
+\subsection{Video calls and WebRTC}
 
 Video calls/conferencing are gaining increasing popularity.  On mobile
 devices, many applications, such as Skype~\cite{skype}, QQ~\cite{qq},
@@ -76,7 +75,7 @@ is proposed to enable video communications via web browsers and
 standardized by the W3C and IETF. Nowadays, mainstream browsers, e.g.,
 Chrome, Firefox, Opera, all have integrated the WebRTC. The WebRTC
 component~\cite{webrtcproject} implemented in the Chrome provides the
-Javascript-style APIs. This component can alos be linked to the native
+Javascript-style APIs. This component can also be linked to the native
 mobile apps as an external library.  WebRTC is now widely used by
 mobile users. However, given its video streaming nature, the power
 consumption of video communication is high, which has slowed down its

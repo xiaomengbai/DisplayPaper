@@ -11,14 +11,15 @@ LCD-GDP scheme.
  
 \subsection{Power Consumption}
   
-\setlength{\belowcaptionskip}{-10pt}
+%\setlength{\belowcaptionskip}{-10pt}
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \begin{center}
-    \includegraphics[scale=.5]{./figures/power.eps}
+    \includegraphics[scale=.45]{./figures/power.eps}
     \caption{Power consumption of the Samsung tablet during real-time video communication under different scenes.}
     \label{fig:power}
   \end{center}
+  \vspace{-3em}
 \end{figure}
 
 
@@ -48,13 +49,14 @@ watts power is consumed on average, saving $12.92\%$ and $33.20\%$
 power, respectively.
 %
 
-\subsection{Video quality}
+\subsection{Video Quality}
 
 We next examine the quality of video calls made under our LCD-GDP
-scheme.  We focus on three metrics: frames per second (FPS), peak
-signal to noise ratio (PSNR), and user observed video call latency.
+scheme. We focus four metrics frames per second (FPS), peak
+signal to noise ratio (PSNR), structural similarity (SSIM), and user-perceived video call latency.
 We compare our scheme with the original WebRTC app.
 
+\noindent{\bf Frame Rate.} 
 To measure the number of frames that are captured, encoded at the
 sender side and decoded and rendered at the receiver side, we use the
 statistics reported by the WebRTC app directly.  We find that at the
@@ -70,90 +72,118 @@ to $640\times 480$ and measured the FPS under scenes with different
 brightness.  Note that in the WebRTC app where we incorporated our
 LCD-GDP scheme, the frame rate of generation is limited to $30$ FPS
 and at most $15$ frames are rendered per second. In each experiment,
-the video call lasted at least $5$ minutes. During the video call, the FPS metrics is recorded per second. 
+the video call lasted at least $5$ minutes. 
+During the video call, the FPS metric is recorded every second. 
 Then we report the statistical results of the FPS in different stages for the
-video streaming originating from the NEXUS smartphone to the Samsung tablet.
+video streaming originating from the Nexus smartphone to the Samsung tablet.
 
 
 
-\begin{table}[h]
-  \small
+\begin{table}[t]
+  \footnotesize
   \centering
-  \caption{FPS of streaming originating from NEXUS smartphone to
-    Samsung tablet}
+  \caption{FPS of video stream originating from Nexus 4 smartphone to
+    Samsung tablet.}
   \label{tab:fps}
   %% fps input | fps sent | fps received | fps decoded | fps output | sent bitrate | receive bitrate
-  \begin{tabular}{|c|c|c|c|c|c|c|} %lcr
+  \begin{tabular}{|c||c|c||c|c||c|c|} %lcr
     \hline
-    & \multicolumn{6}{|c|}{FPS} \\ \hline
-    & \multicolumn{2}{|c|}{input} & \multicolumn{2}{|c|}{sent}
-    & \multicolumn{2}{|c|}{output}
+%    & \multicolumn{6}{|c|}{FPS} \\ \hline
+    & \multicolumn{2}{|c||}{Input} & \multicolumn{2}{|c||}{Sent}
+    & \multicolumn{2}{|c|}{Output}
     \\ \hline
     & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
-    \multicolumn{7}{|c|}{bright scenario} \\ \hline
-    original & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ 
+    \multicolumn{7}{|c|}{Bright scenario} \\ \hline
+    Original App & $23.78$ & $1.66$ & $19.09$ & $2.81$ & $13.91$ & $4.41$ 
     \\ \hline
-    greedy & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$
+    LCD-GDP & $23.99$ & $1.18$ & $18.79$ & $3.06$ & $13.60$ & $3.17$
     \\ \hline
-    \multicolumn{7}{|c|}{dark scenario} \\ \hline
-    original & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ \\ \hline
-    greedy & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ \\ \hline
+    \multicolumn{7}{|c|}{Dark scenario} \\ \hline
+    Original App & $8.02$ & $1.37$ & $8.00$ & $0.42$ & $4.85$ & $0.72$ \\ \hline
+    LCD-GDP & $7.85$ & $0.48$ & $8.00$ & $0.18$ & $4.96$ & $0.53$ \\ \hline
     %% & \multicolumn{2}{inputfps} & \multicolumn{2}{sentfps} & \multicolumn{2}{outputfps} & sentbitrate & recvbitrate \\ \hline
   \end{tabular}
-  
+  \vspace{-18pt}  
 \end{table}
 
 
-In Table~\ref{tab:fps}, we show the FPS of the video in different
-stages. The {\it input} tag means the frame generation rate of the
-capturer. {\it sent} and {\it output} mean the network sent rate and
-final rendering frame rate respectively. $E$ stands for the
+Table~\ref{tab:fps} shows the frame rate of the video stream originated from the Nexus 4 smartphone 
+in different stages. The {\it Input} column indicates the rate of frames captured at the camera. 
+The {\it Sent} column indicates the frame rate of the encoded video stream.
+This stream is sent over the network and decoded at the receiver side.
+The final rendered frame rate is shown in the {\it Output} column. 
+$E$ stands for the
 expectation of the result and $\delta$ is the corresponding standard
 deviation. The table shows that FPS is always lower in the dark scenario
-even in the original scheme. We find this quality degradation
-is due to the specific implementation of this app. Comparing these two
+even in the original scheme. We find this frame rate degradation
+is due to the specific implementation of the original WebRTC app. Comparing these two
 extreme cases in the lowest FPS and the highest FPS,  we find there is no degradation of video quality in terms of FPS.
 
-Potentially, with LCD-GDP, there are two possible reasons that may
-cause the received frames to lose image fidelity: 1) the luminance
-information piggybacked in the delivered frames is lost due to video
-compression or network transmission, 2) the maximum luminance of
-consecutive frames increases abruptly. To investigate this potential
-quality loss, we measured the received video quality using both Peak
-Signal-to-Noise Ratio (PSNR) and Structure SIMilarity (SSIM). To align
-the frames, a black frame is inserted into the streaming every $10$
-frames as the anchor. Then we recorded all the frames on both
-sides. We only compare the frames between two anchor frames if there
-are exact $10$ frames recorded on both sides.  The resemblance of the
-frames is measured in the case of  original WebRTC implementation
-("Original" in the table), using dynamic programming for luminance
-adjustment ("DP" in the table), and our greedy algorithm ("Greedy" in
-the table).  We conducted this experiments under the same scenes where
-we performed the power consumption experiment. The length of the
-videos measured in  this experiment are all $3$ minutes. The results
-are shown in the Table~\ref{tab:distortion}.
+\noindent{\bf Image Fidelity.} 	
+Fidelity loss could occur in LCD-GDP for two reasons: (i) the maximum pixel luminance of 
+frames increases abruptly, causing the constraint shown in Equation (2) be violated;
+and (ii) the luminance information piggybacked in the delivered frames is lost due to video
+compression or network transmission.
+To measure video quality, we calculate the Peak
+Signal-to-Noise Ratio (PSNR) and Structural SIMilarity (SSIM) 
+between the receiver-observed video stream and the original stream captured at the sender. 
+%At the sender side, we record the frames captured by the camera; 
+%at the receiver side, we record the frames output from the rendering module.
+To align the frames, we insert a black frame into the streaming every $10$ 
+frames as the anchor. Then we record all the frames on both sides. 
+We only compare the frames between two anchor frames if there 
+are exactly $10$ frames recorded on both sides. 
+The results are shown in the Table~\ref{tab:distortion}.
 
-\begin{table}[h]
-  \small
-  \centering
-  \caption{Image fidelity}
-  
-  \begin{tabular}{|c|c|c|c|c|c|c|}
-    \hline
-    & \multicolumn{2}{|c|}{Original} & \multicolumn{2}{|c|}{DP} & \multicolumn{2}{|c|}{Greedy} \\ \hline
-    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
-    \multicolumn{7}{|c|}{bright} \\ \hline
-    PSNR & 41.89 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
-    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
-    \multicolumn{7}{|c|}{dusky} \\ \hline
-    PSNR & 41.79 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
-    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
-    \multicolumn{7}{|c|}{dark} \\ \hline
-    PSNR & 44.86 & 6.88 & 41.63 & 9.62 & 41.63 & 9.78 \\ \hline
-    SSIM & 0.97 & 0.01 & 0.97 & 0.01 & 0.97 & 0.01 \\ \hline
-  \end{tabular}
-  \label{tab:distortion}
-\end{table}
+Using the original WebRTC app under Dusky Scene, for example, the PSNR and SSIM between 
+the rendered frame and the original captured frame is 41.79 and 0.98, respectively. 
+The difference is caused by video compression as expected. We use this value as baseline
+and see if using the greedy algorithm causes more fidelity loss. 
+The result show that the PSNR and SSIM of LCD-GDP under the same scene has the same
+value of 41.79, indicating video quality is not affected.
+Under the Bright Scene and the Dark Scene, the PSNR is slightly decreased using LCD-GDP.
+However, the PSNR values are still above 40 dB, indicating there is very little distortion.
+
+%Potentially, with LCD-GDP, there are two possible reasons that may
+%cause the received frames to lose image fidelity: 1) the luminance
+%information piggybacked in the delivered frames is lost due to video
+%compression or network transmission, 2) the maximum luminance of
+%consecutive frames increases abruptly. To investigate this potential
+%quality loss, we measured the received video quality using both Peak
+%Signal-to-Noise Ratio (PSNR) and Structure SIMilarity (SSIM). To align
+%the frames, a black frame is inserted into the streaming every $10$
+%frames as the anchor. Then we recorded all the frames on both
+%sides. We only compare the frames between two anchor frames if there
+%are exact $10$ frames recorded on both sides.  The resemblance of the
+%frames is measured in the case of  original WebRTC implementation
+%("Original" in the table), using dynamic programming for luminance
+%adjustment ("DP" in the table), and our greedy algorithm ("Greedy" in
+%the table).  We conducted this experiments under the same scenes where
+%we performed the power consumption experiment. The length of the
+%videos measured in  this experiment are all $3$ minutes. The results
+%are shown in the Table~\ref{tab:distortion}.
+
+%\begin{table}[t]
+%  \small
+%  \centering
+%  \caption{Image fidelity}
+%  
+%  \begin{tabular}{|c|c|c|c|c|c|c|}
+%    \hline
+%    & \multicolumn{2}{|c|}{Original} & \multicolumn{2}{|c|}{DP} & \multicolumn{2}{|c|}{Greedy} \\ \hline
+%    & $E$ & $\delta$ & $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
+%    \multicolumn{7}{|c|}{bright} \\ \hline
+%    PSNR & 41.89 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
+%    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
+%    \multicolumn{7}{|c|}{dusky} \\ \hline
+%    PSNR & 41.79 & 4.85 & 41.57 & 4.96 & 41.79 & 4.85 \\ \hline
+%    SSIM & 0.98 & 0.01 & 0.98 & 0.01 & 0.98 & 0.01 \\ \hline
+%    \multicolumn{7}{|c|}{dark} \\ \hline
+%    PSNR & 44.86 & 6.88 & 41.63 & 9.62 & 41.63 & 9.78 \\ \hline
+%    SSIM & 0.97 & 0.01 & 0.97 & 0.01 & 0.97 & 0.01 \\ \hline
+%  \end{tabular}
+%  \label{tab:distortion}
+%\end{table}
 
 %% In this table, we show the expectation and standard deviation in both
 %% PSNR and SSIM respectively.  From the results of PSNR and SSIM, the
@@ -166,21 +196,51 @@ are shown in the Table~\ref{tab:distortion}.
 %% a good rendered quality. So we can conclude that little distortion is
 %% introduced into the video conferencing by applying our LCD-GDP.
 
-From the table, we can see in the dusky setting, the PSNR for
-original, DP, and Greedy is $41.89\pm4.85$, $41.57\pm4.96$ and
-$41.79\pm4.85$ respectively. The DP and the Greedy algorithm both make
-no promotion on this metric. The corresponding SSIM values are all
-$0.98\pm0.01$, comfirming that there is no difference perceived by the
-user. Similar results are observed in the case of bright and dark
-cases.
+
+\begin{table}[t]
+	\footnotesize
+	\centering
+	\caption{PSNR (dB) and SSIM between the rendered video stream and the original captured frame.}
+	\begin{tabular}{|c||c|c||c|c|}
+		\hline
+		& \multicolumn{2}{|c||}{Original WebRTC App} & \multicolumn{2}{|c|}{LCD-GDP} \\ \hline
+		& $E$ & $\delta$ & $E$ & $\delta$ \\ \hline
+		\multicolumn{5}{|c|}{Bright Scene} \\ \hline
+		PSNR & 41.89 & 4.85 & 41.79 & 4.85 \\ \hline
+		SSIM & 0.98 & 0.01  & 0.98 & 0.01 \\ \hline
+		\multicolumn{5}{|c|}{Dusky Scene} \\ \hline
+		PSNR & 41.79 & 4.85  & 41.79 & 4.85 \\ \hline
+		SSIM & 0.98 & 0.01  & 0.98 & 0.01 \\ \hline
+		\multicolumn{5}{|c|}{Dark Scene} \\ \hline
+		PSNR & 44.86 & 6.88  & 41.63 & 9.78 \\ \hline
+		SSIM & 0.97 & 0.01  & 0.97 & 0.01 \\ \hline
+	\end{tabular}
+	\label{tab:distortion}
+        \vspace{-18pt}  
+\end{table}
 
 
-At last, the communication latency is also measured between these two
-machines. We use the method proposed in~\cite{yu2014can}. In the
-original version app, $261$ milliseconds of latency on average is found
-during the video call. When applying the LCD-GDP, the average latency
-increases to $302$ milliseconds. Only $40$ milliseconds are
-introduced on average. 
+%From the table, we can see in the dusky setting, the PSNR for
+%original, DP, and Greedy is $41.89\pm4.85$, $41.57\pm4.96$ and
+%$41.79\pm4.85$ respectively. The DP and the Greedy algorithm both make
+%no promotion on this metric. The corresponding SSIM values are all
+%$0.98\pm0.01$, confirming that there is no difference perceived by the
+%user. Similar results are observed in the case of bright and dark
+%cases.
+
+
+\noindent{\bf User-perceived Video Latency.} 
+We also measure the user-perceived video call delay.
+To minimize the impact of wide area network dynamics, 
+we conduct the experiments in the same local area network (LAN).
+%At last, the communication latency is also measured between these two machines. 
+To measure the end-to-end delay, 
+we place the camera on the mobile device in front of a stop watch
+and compare the timestamps rendered on two devices using the method proposed by Yu et al.~\cite{yu2014can}. 
+In the original WebRTC app, we find the average latency is $261$ milliseconds 
+during the video call. When the LCD-GDP scheme is applied, the average latency
+is increased to $302$ milliseconds, indicating only about $40$ milliseconds delay are
+introduced due to the additional processing. 
 
 
 %% \begin{table}[h]

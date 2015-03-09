@@ -1,17 +1,17 @@
 \begin{abstract}
 
-On a mobile device, the display subsystem usually consumes 30\%-60\%
-of the total battery power.  As such, a few designs have aimed to
-reduce the display power consumption in mobile video streaming.  The
+The display subsystem of a mobile device usually consumes 30\%-60\%
+of the total battery power in video streaming. Therefore, a few designs have aimed to
+reduce the display power consumption.  The
 basic idea is to dim the backlight level while properly compensating
 the pixel luminance to maintain image fidelity.  The luminance
 compensation and proper luminance calculation are computation
-intensive and demand per-frame luminance information. Thus, existing
-schemes only target video-on-demand where the luminance information of
-each frame is available in advance. In addition, they demand
+intensive and demand per-frame luminance information. For these reasons, existing
+schemes only work for video-on-demand where 
+each frame (and thus the luminance information) is available in advance. In addition, they demand
 additional computing resource support. Otherwise, if the computation
-is conducted on the mobile device, the computing
-overhead can easily offset the power saving.  In this work, we set to
+is conducted on the mobile device, the power consumption due to such computing
+can easily offset the power saving by dimming the backlight.  In this work, we set to
 investigate power saving for video calls on mobile devices.  Different
 from video-on-demand, the real-time video calls are highly delay
 sensitive and the frame luminance information is not known in
@@ -23,7 +23,7 @@ saving scheme, called LCD-GDP, by utilizing the commonly available GPU on mobile
 devices without demanding additional support.  Our design is
 implemented on WebRTC, a popular real-time web browser based video
 call standard.  Experiments show that our scheme can save upto 33\%
-power consumption in video calls without affecting the video quality.
+power consumption in video calls without affecting the video call quality.
 
 %% Power saving is a significant issue at the mobile platform. Various
 %% techniques were proposed to extend the playback time of the

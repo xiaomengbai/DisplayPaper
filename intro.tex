@@ -10,12 +10,12 @@ and Google WebRTC~\cite{webrtcproject}, are quickly gaining popularity
 among common mobile users.
 
 However, the limited battery power supply remains as the Achilles'
-heels of mobile devices while real-time video communications are very
+heel of mobile devices while real-time video communications are very
 power-hungry. Compared to the video streaming, real-time video calls
-are more demanding. In the real-time video communication, such as the
+are more demanding. In the real-time video communication, such as 
 video conferencing, the video contents are generated on the fly from
 multiple sources. Even for the one-to-one video call, double frames
-are generated other than the common video streaming. Thus, efficiently
+are generated and delivered, which is different from the one-way video-on-demand streaming. Thus, efficiently
 reducing the power consumption for video calls on mobile devices is
 imperative.
 
@@ -53,7 +53,7 @@ cannot be directly used for video calls.
 
 In this paper, we set to explore the display power saving for video
 calls on mobile devices. Since there are often less background changes
-and slower frame rate in practical video calls, we propose a greedy
+and a slower frame rate in practical video calls, we propose a greedy
 display power saving scheme, called {\it LCD-GDP}.  Similar to the
 dynamic programming approach for video streaming, there are same
 constraints that our greedy algorithm must conform to. The {\it first}
@@ -80,7 +80,7 @@ composing frames together and then rendering them.
 To evaluate the performance of our design, we implement LCD-GDP into
 WebRTC and run experiments on a tablet and a smartphone. Experimental
 results show that by using the LCD-GDP, upto $33.2\%$ power
-consumption can be saved on average. our evaluations of the video
+consumption can be saved on average. Our evaluations of the video call
 quality based on the frames per second received, the latency, and
 image fidelity using PSNR (Peak-Signal-to-Noise) and SSIM (Structure
 SIMilarity) show that LCD-GDP introduces negligible impact on the

@@ -54,7 +54,6 @@ LCD-GDP collects the backlight intensity candidates by using the index of the ne
 frame combined with its stream-id to look up the hash table.
 The candidate with the greatest value is selected, and 
 backlight scaling and pixel compensation are performed based on the selected value.
-
 Video call frames are rendered by invoking the rendering modules
 sequentially. It fetches the YUV frame from the queue, and uses the
 OpenGL ES Shaders to do resizing, luminance compensation and YUV to RGB
