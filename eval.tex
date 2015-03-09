@@ -122,7 +122,7 @@ extreme cases in the lowest FPS and the highest FPS,  we find there is no degrad
 
 \noindent{\bf Image Fidelity.} 	
 Fidelity loss could occur in LCD-GDP for two reasons: (i) the maximum pixel luminance of 
-frames increases abruptly, causing the constraint shown in Equation~\cite{eq:distort} be violated;
+frames increases abruptly, causing the constraint shown in Equation~\ref{eq:distort} be violated;
 and (ii) the luminance information piggybacked in the delivered frames is lost due to video
 compression or network transmission.
 To measure video quality, we calculate the Peak
@@ -141,9 +141,11 @@ the rendered frame and the original captured frame is 41.79 and 0.98, respective
 The difference is caused by video compression as expected. We use this value as baseline
 and see if using the greedy algorithm causes more fidelity loss. 
 The result show that the PSNR and SSIM of LCD-GDP under the same scene has the same
-value of 41.79, indicating video quality is not affected.
-Under the Bright Scene and the Dark Scene, the PSNR is slightly decreased using LCD-GDP.
+value of 41.79 and 0.98, indicating video quality is not affected.
+Under the Bright Scene and the Dark Scene, the SSIM values are always the same. 
+The PSNR values are slightly decreased when using LCD-GDP.
 However, the PSNR values are still above 40 dB, indicating there is very little distortion.
+
 
 %Potentially, with LCD-GDP, there are two possible reasons that may
 %cause the received frames to lose image fidelity: 1) the luminance

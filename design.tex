@@ -258,6 +258,8 @@ Therefore, we propose a greedy algorithm that attempts to relax the distortion c
 in Equation~\ref{eq:distort}. We expect our scheme will not lead to significant
 distortion based on the intuition that few scene switches are
 likely to be found during the video call sessions. 
+We evaluate if
+our conjecture holds in practice via experiments in Section \ref{sec:evaluation}. 
 
 %% The DP algorithm certainly can offer us the best solution on adjusting
 %% the backlight over the frames. And the greedy version can also help
@@ -310,8 +312,7 @@ occur if there is significant change in $Y_t^{max}$ and $b_t$ can not be adjuste
 Equation~\ref{eq:distort}. Assuming that there is no
 frequent scene switches in the video calls, we expect such distortion
 is rare and will be
-corrected gradually in next adjustment operations. We evaluate if
-our conjecture hold in practice via experiments in Section \ref{sec:evaluation}. 
+corrected gradually in next adjustment operations. 
 
 
 
