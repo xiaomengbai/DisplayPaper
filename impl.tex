@@ -25,7 +25,7 @@ The adjustment and the rendering modules are both implemented at the
 JAVA layer.  One adjustment module and one rendering module are
 required for each video stream, including the stream produced by the
 host itself, for processing and rendering frames of this stream.  For
-example, if a video call involves two devices, there will two
+example, if a video call involves two devices, there will be two
 adjustment modules and two rendering modules on each device to process
 two streams.  For each stream, these two modules run on independent
 threads and are connected by a YUV frame queue.

@@ -33,7 +33,7 @@
 \usepackage{float}
 \usepackage{alphalph}
 \usepackage{epic,eepic}
-\usepackage{authblk}
+%\usepackage{authblk}
 \usepackage{algpseudocode}
 \usepackage{mathptmx}
 \usepackage{epstopdf}
@@ -54,24 +54,24 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 
-\ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
-  % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
-  % and their extensions so you won't have to specify these with
-  % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
-\else
-  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
-  % will default to the driver specified in the system graphics.cfg if no
-  % driver is specified.
-  % \usepackage[dvips]{graphicx}
-  % declare the path(s) where your graphic files are
-  % \graphicspath{{../eps/}}
-  % and their extensions so you won't have to specify these with
-  % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.eps}
-\fi
+%% \ifCLASSINFOpdf
+%%   % \usepackage[pdftex]{graphicx}
+%%   % declare the path(s) where your graphic files are
+%%   % \graphicspath{{../pdf/}{../jpeg/}}
+%%   % and their extensions so you won't have to specify these with
+%%   % every instance of \includegraphics
+%%   % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+%% \else
+%%   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+%%   % will default to the driver specified in the system graphics.cfg if no
+%%   % driver is specified.
+%%   % \usepackage[dvips]{graphicx}
+%%   % declare the path(s) where your graphic files are
+%%   % \graphicspath{{../eps/}}
+%%   % and their extensions so you won't have to specify these with
+%%   % every instance of \includegraphics
+%%   % \DeclareGraphicsExtensions{.eps}
+%% \fi
 
 \hyphenation{op-tical net-works semi-conduc-tor}
 \begin{document}
@@ -98,21 +98,53 @@
 
 
 %% \author{
-%%   \IEEEauthorblockN{Mengbai Xiao}
-%%   \IEEEauthorblockA{
-%%     mxiao3@gmu.edu\\
-%%     Department of Computer Science\\
-%%     George Mason University}
-%%     \and
-%%   \IEEEauthorblockN{Songqing Chen}
-%%   \IEEEauthorblockA{
-%%     sqchen@gmu.edu\\ check the email\\
-%%     Department of Computer Science\\
-%%     George Mason University}
+%% %  \IEEEauthorblockN{}
+%% %  \IEEEauthorblockA{
+%% %    mxiao3@gmu.edu\\
+%% %    Department of Computer Science\\
+%% %    George Mason University
+%% %  }
+%%   %%   \and
+%%   %% \IEEEauthorblockN{Songqing Chen}
+%%   %% \IEEEauthorblockA{
+%%   %%   sqchen@gmu.edu\\
+%%   %%   Department of Computer Science\\
+%%   %%   George Mason University}
 %% }
+\author{
+  \IEEEauthorblockN{Mengbai Xiao}
+  \IEEEauthorblockA{
+    Department of \\
+    Computer Science\\
+    George Mason University\\
+    mxiao3@gmu.edu}
+  \and
+  \IEEEauthorblockN{Yao Liu}
+  \IEEEauthorblockA{
+    Department of \\
+    Computer Science\\
+    SUNY Binghamton\\
+    yaoliu@cs.binghamton.edu}
+  \and
+  \IEEEauthorblockN{Lei Guo}
+  \IEEEauthorblockA{
+    Department of \\
+    Computer Science and Engineering\\
+    Ohio State University\\
+    lguo@cse.ohio-state.edu}
+  \and
+  \IEEEauthorblockN{Songqing Chen}
+  \IEEEauthorblockA{
+    Department of \\
+    Computer Science\\
+    George Mason University\\
+    sqchen@gmu.edu}
+}
 
-\author{}
-
+%% \author{
+%% Mengbai Xiao$^1$, Yao Liu$^2$, and Songqing Chen$^1$\\
+%% $^1$George Mason University \hspace{0.5in} $^2$ SUNY Binghamton
+%% }
 \maketitle
 
 %\thispagestyle{empty}
@@ -122,6 +154,7 @@
 
 \input{abstr}
 
+\IEEEpeerreviewmaketitle
 %\vspace{-1em}
 \input{intro}
 
